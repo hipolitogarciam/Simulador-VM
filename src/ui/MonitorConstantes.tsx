@@ -69,7 +69,7 @@ export function MonitorConstantes({ compacto = false }: { compacto?: boolean }) 
           </div>
           <div className={`valor ${c.tani && c.tani.tas < 90 ? 'alerta' : ''}`} style={{ color: '#e6edf3' }}>
             <span className="valor-etiqueta">TA NI</span>
-            <span className="valor-numero tani">{c.midiendoTA ? 'midiendo…' : taTexto}</span>
+            <span className={`valor-numero tani ${c.midiendoTA ? 'midiendo' : ''}`}>{c.midiendoTA ? 'midiendo…' : taTexto}</span>
             <span className="valor-unidad">
               {c.midiendoTA ? `${Math.round(c.progresoTA * 100)} %` : c.tani ? `${tam} mmHg · ${c.tani.hora}` : 'mmHg · sin medir'}
             </span>

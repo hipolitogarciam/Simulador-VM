@@ -433,7 +433,15 @@ textarea {
   font-family: ui-monospace, Menlo, Consolas, monospace;
 }
 .valor-numero.tani {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.valor-numero.midiendo {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--texto-2);
 }
 .valor-unidad {
   font-size: 0.65rem;
@@ -472,11 +480,13 @@ textarea {
 .botones-monitor {
   display: flex;
   gap: 6px;
+  flex-shrink: 0;
 }
 .botones-monitor .boton {
   min-height: 40px;
   padding: 4px 10px;
   font-size: 0.85rem;
+  white-space: nowrap;
 }
 
 /* ---------- Panel del caso ---------- */

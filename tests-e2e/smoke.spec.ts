@@ -25,7 +25,6 @@ test('recorrer el caso 1 acertando todo, con pausas y TA', async ({ page }, test
   }
   await page.getByRole('button', { name: 'Medir TA' }).click();
   await expect(page.getByText('Midiendo TA…')).toBeVisible();
-  await page.screenshot({ path: `docs/capturas/${testInfo.project.name}-caso.png`, fullPage: false });
   let pasos = 0;
   for (;;) {
     const opciones = page.locator('.opcion');
@@ -43,6 +42,11 @@ test('recorrer el caso 1 acertando todo, con pausas y TA', async ({ page }, test
     await opciones.nth(elegida).click();
     await expect(page.locator('.feedback.correcto')).toBeVisible();
     pasos += 1;
+    if (pasos === 2) {
+      // Tras la transición del paso 1 (10 s): captura con la alarma de VTE bajo y la TA medida.
+      await expect(page.getByText(/^\d{2,3}\/\d{2,3}$/)).toBeVisible({ timeout: 20_000 });
+      await page.screenshot({ path: `docs/capturas/${testInfo.project.name}-caso.png`, fullPage: false });
+    }
     const siguiente = page.getByRole('button', { name: /Siguiente paso|Ver resumen/ });
     const texto = await siguiente.textContent();
     await siguiente.click();
