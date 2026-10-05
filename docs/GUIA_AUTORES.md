@@ -33,7 +33,10 @@ de los parámetros del paciente y del respirador, nunca se escriben a mano.
 - `datos`: `edad`, `sexo`, `talla` (cm, para el peso ideal), `pesoReal?`, `contexto`.
 - `pacienteInicial: Paciente`, `respiradorInicial: Respirador`, `gasesIniciales?`.
 - `pasos[]` (5–8): `id`, `titulo`, `narrativa` (párrafos separados por línea en
-  blanco, `**negrita**`, `*cursiva*`), `pregunta`, `opciones[4]`, `transicion?`, `pista?`.
+  blanco, `**negrita**`, `*cursiva*`), `pregunta`, `opciones[4]`, `transicion?`, `pista?`,
+  `saltoTiempo?` (segundos de tiempo simulado que se saltan al entrar en el paso, 45 por
+  defecto, para que gases y hemodinámica alcancen lo que cuenta la narrativa; usa 120–300
+  si el paso dice "diez minutos después").
 - `opciones[i]`: `texto`, `correcta` (exactamente una `true`), `explicacion`,
   `etiquetaTema` (una de `EtiquetaTema`), `consecuencia?` (texto) y
   `transicionConsecuencia?` (cambios temporales que ilustran el error durante ~9 s;
@@ -82,7 +85,8 @@ Esfuerzo muscular `pmus`:
 `modo` (`VC` | `PC` | `PS`), `vt` (L), `flujo` (L/s; 0,5 = 30 L/min, 1 = 60 L/min),
 `pausa` (s, VC), `fr`, `peep`, `fio2` (0,21–1), `ti` (PC), `deltaP` (PC, sobre PEEP),
 `ps` (PS, sobre PEEP), `trigE` (PS, fracción del flujo pico, 0,25 = 25 %), `tiMax` (PS),
-`triggerFlujo` (L/min; 0 = controlado puro; 2 = asistido), `rampa` (s), `alarmaPmax`.
+`triggerFlujo` (L/min; 0 = controlado puro; 2 = asistido), `rampa` (s), `alarmaPmax`
+(cmH₂O, 40 por defecto) y `alarmaVteMin` (L, 0,3 por defecto).
 
 En `PS`, `fr` es la frecuencia de respaldo. El paciente tiene que respirar
 (`pmus: espontaneo`) y `triggerFlujo > 0` para que dispare.

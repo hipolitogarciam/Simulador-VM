@@ -196,6 +196,14 @@ export class Simulador {
     this.hemo = avanzarHemo(this.hemo, obj, dt);
   }
 
+  /** Salto de tiempo (p. ej. al pasar de paso): avanza aunque las curvas estén congeladas. */
+  saltar(segundos: number): void {
+    const c = this.congelado;
+    this.congelado = false;
+    this.avanzar(segundos);
+    this.congelado = c;
+  }
+
   /** Avanza la simulación `segundos` de tiempo simulado. */
   avanzar(segundos: number): void {
     if (this.congelado) return;
@@ -280,7 +288,7 @@ export class Simulador {
     set('presionAlta', listo && m.ppico > r.alarmaPmax);
     const desconectado = p.fuga >= 1 || p.extubado || (listo && m.vti > 0.05 && m.fuga > 0.85);
     set('desconexion', listo && desconectado);
-    set('vteBajo', listo && !desconectado && m.vte < 0.25);
+    set('vteBajo', listo && !desconectado && m.vte < r.alarmaVteMin);
     set('vmBajo', listo && !desconectado && T > 20 && m.vmEsp < 3);
     set('apnea', T - this.ultimoCicloT > 12);
     set('spo2Baja', this.gases.spo2 < 90);

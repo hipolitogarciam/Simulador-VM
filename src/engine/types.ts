@@ -91,6 +91,8 @@ export interface Respirador {
   rampa: number;
   /** Límite de alarma de presión alta. */
   alarmaPmax: number;
+  /** Límite de alarma de VTE bajo (L). */
+  alarmaVteMin: number;
 }
 
 export type Fase = 'insp' | 'pausaInsp' | 'esp' | 'pausaEsp';

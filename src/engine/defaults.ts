@@ -41,6 +41,7 @@ export const RESPIRADOR_BASE: Respirador = {
   triggerFlujo: 0,
   rampa: 0.08,
   alarmaPmax: 40,
+  alarmaVteMin: 0.3,
 };
 
 export function paciente(cambios: Partial<Paciente> = {}): Paciente {

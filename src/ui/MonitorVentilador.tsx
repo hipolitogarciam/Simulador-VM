@@ -119,7 +119,7 @@ export function MonitorVentilador({ compacto = false }: { compacto?: boolean }) 
         <div className="numeros">
           <Valor etiqueta="Ppico" valor={f0(m.ppico)} unidad="cmH₂O" color={COLORES.presion} alerta={m.ppico > r.alarmaPmax} />
           <Valor etiqueta="PEEP" valor={f0(m.peep)} unidad="cmH₂O" color={COLORES.presion} />
-          <Valor etiqueta="VTE" valor={f0(m.vte * 1000)} unidad="ml" color={COLORES.volumen} alerta={m.vte < 0.25} />
+          <Valor etiqueta="VTE" valor={f0(m.vte * 1000)} unidad="ml" color={COLORES.volumen} alerta={m.vte < r.alarmaVteMin} />
           <Valor etiqueta="VM" valor={f1(m.vmEsp)} unidad="L/min" color={COLORES.volumen} />
           <Valor etiqueta="FR" valor={f0(m.frTotal)} unidad="rpm" sub={m.frEspontanea > 0.5 ? `esp ${f0(m.frEspontanea)}` : undefined} />
           <Valor etiqueta="FiO₂" valor={(r.fio2 * 100).toFixed(0)} unidad="%" />

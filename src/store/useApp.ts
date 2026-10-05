@@ -193,6 +193,9 @@ export const useApp = create<EstadoApp>((set, get) => {
         return;
       }
       actualizarProgreso(get, set, store, caso.id, (pc) => ({ ...pc, pasoActual: sesion.pasoIdx + 1 }));
+      // Salto de tiempo: la narrativa del siguiente paso describe minutos de evolución.
+      const siguiente = caso.pasos[sesion.pasoIdx + 1];
+      getSimulador().saltar(siguiente?.saltoTiempo ?? 45);
       set({ sesion: { ...sesion, pasoIdx: sesion.pasoIdx + 1, fase: 'pregunta', opcionElegida: null, finConsecuencia: null } });
     },
 

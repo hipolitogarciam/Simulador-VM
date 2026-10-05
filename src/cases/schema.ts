@@ -55,6 +55,11 @@ export interface Paso {
   transicion?: Transicion;
   /** Pista opcional sobre qué maniobra de exploración ayuda (pausa, TA...). */
   pista?: string;
+  /**
+   * Tiempo simulado (s) que se salta al entrar en este paso, para que gases y
+   * hemodinámica (lentos) alcancen lo que describe la narrativa. Por defecto 45 s.
+   */
+  saltoTiempo?: number;
 }
 
 export interface MedidasPaso {
