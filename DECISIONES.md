@@ -38,6 +38,12 @@ Registro de las decisiones no especificadas en el encargo, con su justificación
 - La curva de presión muestra las "muescas" del esfuerzo del paciente (30 % de Pmus) en PC/PS y en
   espiración en todos los modos; los valores numéricos (Ppico, Pmedia) no incluyen esa perturbación.
   Con el paciente activo las pausas no dan valores fiables, como en un respirador real.
+- La PEEP mostrada es la presión medida al final de la espiración (cae con la desconexión).
+- Reserva alveolar de O₂: si la ventilación alveolar cae por debajo de 0,3 L/min (apnea, desconexión,
+  extubación) la FiO₂ alveolar efectiva decae hacia 0,08 con τ = 60 s y la SpO₂ baja; al ventilar se
+  recupera con τ = 10 s.
+- La pausa espiratoria también se ejecuta en PS/asistido: se aplica en el siguiente fin de espiración
+  o disparo del paciente, cerrando la válvula (como el "expiratory hold" de un respirador real).
 - Transiciones: los parámetros del respirador cambian de golpe (como al girar el mando); los del
   paciente en rampa suave (`duracion`, 8 s por defecto); gases y hemodinámica siguen su τ.
 
