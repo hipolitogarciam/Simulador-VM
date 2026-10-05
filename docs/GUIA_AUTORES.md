@@ -19,7 +19,11 @@ de los parámetros del paciente y del respirador, nunca se escriben a mano.
    La tabla muestra, para el estado inicial (paso 0) y tras la transición de cada
    paso k: Ppico, Pplat, PEEP total, auto-PEEP, gradiente, driving pressure,
    compliance estática, resistencia, VTI, VTE, VM, FR, Pmedia, Ti, Te, fuga,
-   ciclado por Ti máx, flujo al final de la espiración, PaCO₂, EtCO₂, SpO₂, TA y FC.
+   ciclado por Ti máx, flujo al final de la espiración, PaCO₂, EtCO₂, SpO₂, TA y FC
+  (`FResp` = ciclos por minuto disparados por el paciente, `frEspontanea` en `MedidasPaso`).
+  **Con el paciente activo (`pmus` ≠ ninguno) las pausas no dan valores fiables** (Pplat, PEEP
+  total, compliance): no los cites. Y el ciclo medido es uno solo: en estados con esfuerzos
+  desadaptados el VTE/PaCO₂ de la tabla varía; usa `gases` para fijar una PaCO₂ coherente.
 5. Escribe la narrativa citando **esos** números (redondeados: "unos 270 ml",
    "Pplat 28"). Si no te gustan, cambia los parámetros, no el texto.
 6. Escribe `expectativas` que verifiquen en el motor lo que afirma el caso

@@ -62,6 +62,7 @@ export function medirEstado(
     vte: m.vte,
     vmEsp: m.vmEsp,
     frTotal: m.frTotal,
+    frEspontanea: m.frEspontanea,
     pmedia: m.pmedia,
     ti: m.ti,
     te: m.te,
@@ -84,13 +85,13 @@ export function tablaMedidas(medidas: MedidasPaso[]): string {
   const f = (v: number | null, d = 1) => (v === null ? '—' : v.toFixed(d));
   const cab = [
     'paso', 'Ppico', 'Pplat', 'PEEPtot', 'autoPEEP', 'grad', 'DP', 'Cest(ml)', 'R', 'VTI(ml)', 'VTE(ml)',
-    'VM', 'FR', 'Pmed', 'Ti', 'Te', 'fuga%', 'TiMax', 'Fl.finEsp', 'PaCO2', 'EtCO2', 'SpO2', 'TA', 'FC',
+    'VM', 'FR', 'FResp', 'Pmed', 'Ti', 'Te', 'fuga%', 'TiMax', 'Fl.finEsp', 'PaCO2', 'EtCO2', 'SpO2', 'TA', 'FC',
   ];
   const filas = medidas.map((m) => [
     String(m.paso),
     f(m.ppico), f(m.pplat), f(m.peepTotal), f(m.autoPeep), f(m.gradiente), f(m.drivingPressure),
     m.complianceEstatica === null ? '—' : (m.complianceEstatica * 1000).toFixed(0),
-    f(m.resistencia), (m.vti * 1000).toFixed(0), (m.vte * 1000).toFixed(0), f(m.vmEsp), f(m.frTotal, 0),
+    f(m.resistencia), (m.vti * 1000).toFixed(0), (m.vte * 1000).toFixed(0), f(m.vmEsp), f(m.frTotal, 0), f(m.frEspontanea, 0),
     f(m.pmedia), f(m.ti, 2), f(m.te, 2), (m.fuga * 100).toFixed(0), m.cicladoPorTiMax ? 'sí' : 'no',
     f(m.flujoFinEsp, 2), f(m.paco2, 0), f(m.etco2, 0), f(m.spo2, 0), `${m.tas.toFixed(0)}/${m.tad.toFixed(0)}`, f(m.fc, 0),
   ]);

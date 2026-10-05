@@ -77,6 +77,8 @@ export interface MedidasPaso {
   vte: number;
   vmEsp: number;
   frTotal: number;
+  /** Ciclos por minuto disparados por el paciente. */
+  frEspontanea: number;
   pmedia: number;
   ti: number;
   te: number;

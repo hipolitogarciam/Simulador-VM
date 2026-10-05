@@ -56,6 +56,8 @@ function acumuladorVacio(): AcumuladorCiclo {
   };
 }
 
+/** Fracción del esfuerzo muscular que se ve en la curva de presión (muescas y picos). */
+const MUESCA_ESFUERZO = 0.3;
 const DURACION_PAUSA_INSP = 1.0;
 const DURACION_PAUSA_ESP = 1.5;
 const TE_MINIMO_TRIGGER = 0.3;
@@ -242,14 +244,21 @@ export class Ventilador {
       }
     }
 
-    // Presión mostrada con "joroba" por espiración activa durante la inspiración en presión.
-    let pawMostrada = paw;
+    // Presión medida: con "joroba" por espiración activa durante la inspiración en presión.
+    let pawMedida = paw;
     if (p.pmus.tipo === 'espiracionActiva' && this.fase !== 'esp' && Fl < 0) {
-      pawMostrada = paw + -Fl * 9 * p.pmusGanancia;
+      pawMedida = paw + -Fl * 9 * p.pmusGanancia;
     }
     // Cuando el paciente está desconectado o extubado, la Y está abierta al aire.
     if (fuga >= 1) {
-      pawMostrada = paw * 0.05;
+      pawMedida = paw * 0.05;
+    }
+    // Presión mostrada en la curva: el esfuerzo del paciente deja picos y muescas que el
+    // servocontrol de presión (PC/PS) o la válvula espiratoria no compensan del todo.
+    // En VC durante la inspiración la Paw ya refleja el esfuerzo (Paw = F·R + Palv).
+    let pawMostrada = pawMedida;
+    if (pm !== 0 && fuga < 1 && (this.fase === 'esp' || this.fase === 'pausaEsp' || r.modo !== 'VC')) {
+      pawMostrada = pawMedida - MUESCA_ESFUERZO * pm;
     }
 
     // Integración.
@@ -259,8 +268,8 @@ export class Ventilador {
     if (this.vm < 0) this.vm = 0;
 
     // Acumuladores del ciclo.
-    this.acum.ppico = Math.max(this.acum.ppico, pawMostrada);
-    this.acum.sumaP += pawMostrada;
+    this.acum.ppico = Math.max(this.acum.ppico, pawMedida);
+    this.acum.sumaP += pawMedida;
     this.acum.n += 1;
     if (this.fase === 'insp' || this.fase === 'pausaInsp') {
       this.acum.ti += dt;
