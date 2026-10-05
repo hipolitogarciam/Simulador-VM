@@ -17,15 +17,15 @@ export interface ResultadoSimulacion {
 }
 
 /**
- * Ejecuta el respirador `nCiclos` ciclos y mide en los últimos, incluyendo una
- * pausa inspiratoria y una espiratoria para obtener Pplat y PEEP total.
+ * Ejecuta el respirador `nCiclos` ciclos (mínimo 12) y mide en el último. Antes de los
+ * 6 últimos ciclos hace una pausa inspiratoria y otra espiratoria para obtener Pplat y PEEP total.
  */
 export function simular(
   p: Paciente,
   r: Respirador,
   opciones: { nCiclos?: number; conPausas?: boolean } = {},
 ): ResultadoSimulacion {
-  const nCiclos = Math.max(5, opciones.nCiclos ?? 12);
+  const nCiclos = Math.max(12, opciones.nCiclos ?? 12);
   const conPausas = opciones.conPausas ?? true;
   const v = new Ventilador({ ...p }, { ...r });
   const muestras: Array<[number, number, number, number]> = [];
@@ -38,11 +38,11 @@ export function simular(
   let pausaEspPedida = false;
   const maxPasos = Math.ceil(((nCiclos + 4) * (60 / Math.max(1, r.fr)) + 10) / DT);
   for (let i = 0; i < maxPasos; i++) {
-    if (conPausas && !pausaInspPedida && v.ciclos === nCiclos - 3) {
+    if (conPausas && !pausaInspPedida && v.ciclos === nCiclos - 9) {
       v.pausaInspiratoria();
       pausaInspPedida = true;
     }
-    if (conPausas && !pausaEspPedida && v.ciclos === nCiclos - 2) {
+    if (conPausas && !pausaEspPedida && v.ciclos === nCiclos - 8) {
       v.pausaEspiratoria();
       pausaEspPedida = true;
     }
