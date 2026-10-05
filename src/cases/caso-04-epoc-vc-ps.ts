@@ -227,7 +227,7 @@ export const caso04: Caso = {
       titulo: 'El paciente despierta',
       narrativa:
         'Cuarenta minutos después, con la sedación aligerada (dosis según protocolo local), el paciente abre los ojos y empieza a hacer esfuerzos. El trigger por flujo está en 2 L/min y **dispara todos los ciclos: FR total 18**, ' +
-        'cada uno con los **440 ml** programados a 60 L/min. El volumen minuto ha subido a 7,5 L/min, la Ppico es de 31 cmH₂O y el **EtCO₂ ha bajado a 29 mmHg**.\n\n' +
+        'cada uno con los **440 ml** programados a 60 L/min. El volumen minuto ha subido a unos 7 L/min, la Ppico es de 31 cmH₂O y el **EtCO₂ ha bajado a 29 mmHg**.\n\n' +
         'En la curva de flujo vuelves a ver que la **espiración no llega a cero** antes de cada esfuerzo, y ya no puedes hacer una pausa espiratoria fiable porque el paciente dispara antes de que termine el ciclo. ' +
         'No hay tos ni desadaptación franca; está tranquilo, colabora y mantiene SpO₂ 100 % con FiO₂ 0,4. TA 125/75, FC 114.',
       pregunta: '¿Qué haces con el respirador?',
@@ -273,7 +273,7 @@ export const caso04: Caso = {
       narrativa:
         'En **PS 14 sobre PEEP 5** el paciente dispara a 18 rpm con un **VTE de unos 420 ml** y Ppico 19 cmH₂O. Pero el monitor muestra un **Ti de 1,06 s**, bastante más largo que su esfuerzo, y en la curva de flujo la rama inspiratoria **decae muy despacio**: ' +
         'tarda en caer hasta el 25 % del pico, que es el umbral del trigger espiratorio.\n\n' +
-        'Al final de cada insuflación ves que contrae el abdomen y que la presión hace una pequeña joroba antes de ciclar: **está intentando espirar mientras el respirador sigue insuflando**. ' +
+        'Al final de cada insuflación ves que contrae el abdomen (en un respirador real se vería además como una pequeña joroba en la curva de presión justo antes de ciclar): **está intentando espirar mientras el respirador sigue insuflando**. ' +
         'El flujo espiratorio vuelve a no llegar a cero antes del siguiente esfuerzo. TA 119/72, FC 119.',
       pregunta: '¿Qué asincronía es y cómo la corriges?',
       opciones: [
@@ -321,15 +321,15 @@ export const caso04: Caso = {
       narrativa:
         'Con el **trigger espiratorio al 45 %** el **Ti baja a 0,54 s**, el Te sube a 2,8 s y el paciente ya no contrae el abdomen al final de la insuflación. El VTE es de **unos 350 ml** (≈ 4,8 ml/kg de peso ideal) a 18 rpm, con Ppico 19. ' +
         'La rama espiratoria del flujo se acerca mucho más a cero antes de cada esfuerzo. TA 127/75, FC 112.\n\n' +
-        'Gasometría de control: **pH 7,37, PaCO₂ 54 mmHg**, bicarbonato 30 mmol/L. SpO₂ 99 % con FiO₂ 0,4.',
+        'Gasometría de control: **pH 7,36, PaCO₂ 55 mmHg**, bicarbonato 30 mmol/L. SpO₂ 99 % con FiO₂ 0,4.',
       pregunta: '¿Cuál es el plan ahora?',
       opciones: [
         {
-          texto: 'Mantengo PS 14 / PEEP 5 / trigger espiratorio 45 %, bajo la FiO₂ a 0,35 para SatO₂ > 90 %, sigo con broncodilatadores (dosis según protocolo local), tolero la PaCO₂ de 54 con pH 7,37 y lo traslado a UCI para continuar el destete.',
+          texto: 'Mantengo PS 14 / PEEP 5 / trigger espiratorio 45 %, bajo la FiO₂ a 0,35 para SatO₂ > 90 %, sigo con broncodilatadores (dosis según protocolo local), tolero la PaCO₂ de 55 con pH 7,36 y lo traslado a UCI para continuar el destete.',
           correcta: true,
           explicacion:
             'El paciente está adaptado: dispara todos los ciclos, el Ti coincide con su esfuerzo y el atrapamiento ha disminuido. Un Vt de 350 ml en PS es aceptable en un EPOC si está cómodo. ' +
-            'La PaCO₂ de 54 con pH 7,37 es su hipercapnia crónica compensada: subir la asistencia para "normalizarla" solo produce sobreasistencia. Se titula la FiO₂ a la mínima que mantenga SatO₂ > 90 %.',
+            'La PaCO₂ de 55 con pH 7,36 es su hipercapnia crónica compensada: subir la asistencia para "normalizarla" solo produce sobreasistencia. Se titula la FiO₂ a la mínima que mantenga SatO₂ > 90 %.',
           etiquetaTema: 'presión soporte',
         },
         {
@@ -361,7 +361,7 @@ export const caso04: Caso = {
     },
   ],
   puntosClave: [
-    'En el pulmón obstructivo la constante de tiempo espiratoria es larga: si el flujo espiratorio no llega a cero antes del siguiente ciclo hay atrapamiento, y la pausa espiratoria lo cuantifica (PEEP total − PEEP = auto-PEEP).',
+    'En el pulmón obstructivo la constante de tiempo espiratoria es larga: si el flujo espiratorio no llega a cero antes del siguiente ciclo hay atrapamiento, y la pausa espiratoria lo cuantifica (PEEP total − PEEP = auto-PEEP). Si la hipotensión o la desaturación son bruscas, la regla de oro sigue siendo desconectar (dejando espirar) y ventilar con bolsa: si mejora, el problema es del respirador o del circuito; si no, del paciente o del tubo (DOPE).',
     'Programación obstructiva: FR baja, flujo alto, Ti corto e I:E larga, Vt 6 ml/kg de peso ideal y PEEP externa moderada (por debajo de la auto-PEEP). La Ppico sube por el flujo, pero la que importa es la Pplat.',
     'En un retenedor crónico no se normaliza la PaCO₂: se tolera la hipercapnia permisiva mientras el pH sea aceptable; subir la FR solo acorta el Te y aumenta la auto-PEEP.',
     'Cuando el paciente recupera el esfuerzo, la presión soporte le permite marcar su propio Ti y FR; en VC asistido cada esfuerzo recibe un Vt fijo y el atrapamiento reaparece.',

@@ -75,7 +75,7 @@ export const caso06: Caso = {
         'Hombre de 66 años, **175 cm** y 88 kg, con neumonía bilateral intubado hace 6 horas en un hospital comarcal. Vais a trasladarlo en UVI móvil a la UCI de referencia: unos 90 minutos de carretera. ' +
         'Está sedado con propofol y relajado con cisatracurio en perfusión (dosis según protocolo local). Abundantes secreciones en la hoja de enfermería; la última aspiración fue hace 3 horas.\n\n' +
         'Lo pasas al respirador de transporte en **volumen control: Vt 420 ml, flujo 45 L/min (0,75 L/s) sin pausa, FR 16, PEEP 5, FiO₂ 0,6**, alarma de presión máxima en 40 cmH₂O.\n\n' +
-        'El monitor muestra **Ppico 21 cmH₂O**, VTI = VTE 420 ml, VM 6,7 L/min, EtCO₂ 35 mmHg, SpO₂ 99 %. TA 128/74, FC 92. Antes de arrancar haces una **pausa inspiratoria**: **Pplat 13–14 cmH₂O**.',
+        'El monitor muestra **Ppico 21 cmH₂O**, VTI = VTE 420 ml, VM 6,7 L/min, EtCO₂ 34 mmHg, SpO₂ 99 %. TA 128/74, FC 92. Antes de arrancar haces una **pausa inspiratoria**: **Pplat 13–14 cmH₂O**.',
       pregunta: '¿Cómo interpretas Ppico 21 y Pplat 14 y qué utilidad tienen antes de salir?',
       opciones: [
         {
@@ -104,7 +104,7 @@ export const caso06: Caso = {
           texto: 'Con Ppico 21 el paciente está hipoventilado: subo la FR a 24 para bajar el CO₂ antes del traslado.',
           correcta: false,
           explicacion:
-            'La Ppico no informa de la ventilación. El EtCO₂ de 35 mmHg con VM 6,7 L/min indica normocapnia. Subir la FR a 24 acortaría el tiempo espiratorio y provocaría hipocapnia sin ningún beneficio.',
+            'La Ppico no informa de la ventilación. El EtCO₂ de 34 mmHg con VM 6,7 L/min indica normocapnia. Subir la FR a 24 acortaría el tiempo espiratorio y provocaría hipocapnia sin ningún beneficio.',
           etiquetaTema: 'ventilación y CO2',
         },
       ],
@@ -115,7 +115,7 @@ export const caso06: Caso = {
       id: 'p2',
       titulo: 'A los 30 minutos de carretera',
       narrativa:
-        'Lleváis media hora de viaje. No ha saltado ninguna alarma, pero al mirar el monitor ves que la **Ppico ha subido a 27 cmH₂O** (de 21). El VTE sigue en 420 ml, el EtCO₂ en 35 mmHg y la SpO₂ en el 97–98 %.\n\n' +
+        'Lleváis media hora de viaje. No ha saltado ninguna alarma, pero al mirar el monitor ves que la **Ppico ha subido a 27 cmH₂O** (de 21). El VTE sigue en 420 ml, el EtCO₂ en 34 mmHg y la SpO₂ en el 97–98 %.\n\n' +
         'En la curva de **flujo**, la rama espiratoria ya no es lisa: muestra **oscilaciones rápidas e irregulares, en dientes de sierra**, que también se adivinan en la curva de presión. El flujo espiratorio llega a 0 antes del siguiente ciclo. El paciente sigue relajado, sin esfuerzos.',
       pregunta: '¿Qué ha cambiado y cuál es la causa más probable?',
       pista: 'Haz una pausa inspiratoria y compara la Pplat con la de referencia (14). Una pausa espiratoria te dirá si hay auto-PEEP.',
@@ -289,7 +289,7 @@ export const caso06: Caso = {
       titulo: 'La sonda no pasa',
       narrativa:
         'Desconectas y ventilas con bolsa a FiO₂ 1,0: **cada insuflación cuesta mucho**, la bolsa "rebota" y el tórax se expande poco, aunque de forma simétrica. Con oxígeno al 100 % la SpO₂ remonta lentamente hasta el 96–97 %. ' +
-        'Auscultación: ruidos transmitidos gruesos, sin sibilancias; sin enfisema subcutáneo ni ingurgitación yugular; TA 122/72.\n\n' +
+        'Auscultación: ruidos transmitidos gruesos, sin sibilancias; sin enfisema subcutáneo ni ingurgitación yugular; TA 123/72.\n\n' +
         'Pasas una **sonda de aspiración por el tubo y no progresa**: se detiene unos centímetros antes de la punta y no sale nada. Lo intentas una segunda vez con el mismo resultado.',
       pregunta: '¿Qué significa y qué haces?',
       opciones: [
@@ -332,7 +332,7 @@ export const caso06: Caso = {
       titulo: 'Tras el cambio de tubo',
       narrativa:
         'Cambias el tubo por uno nuevo del 8 a 23 cm en la comisura: capnografía con onda desde el primer ciclo, auscultación simétrica. En la punta del tubo retirado hay un **tapón de moco espeso** que ocluía casi toda la luz.\n\n' +
-        'Reconectas al respirador con la misma programación en VC y FiO₂ 1,0: **Ppico 21 cmH₂O**, Pplat 14 tras la pausa (gradiente 7, R ≈ 10), VTE 420 ml, curva de flujo espiratorio lisa, EtCO₂ 35 mmHg, **SpO₂ 100 %**. TA 128/74, FC 92.',
+        'Reconectas al respirador con la misma programación en VC y FiO₂ 1,0: **Ppico 21 cmH₂O**, Pplat 14 tras la pausa (gradiente 7, R ≈ 10), VTE 420 ml, curva de flujo espiratorio lisa, EtCO₂ 34 mmHg, **SpO₂ 100 %**. TA 128/74, FC 92.',
       pregunta: '¿Qué programación dejas para los 30 minutos de traslado que quedan?',
       opciones: [
         {

@@ -249,7 +249,7 @@ export const caso08: Caso = {
       narrativa:
         'La bomba de propofol marca **"fin de infusión"** y la jeringa está vacía; la vía periférica refluye bien. La marca del tubo sigue a 23 cm en la comisura, la auscultación es simétrica, no hay globo vesical. ' +
         'Administras un bolo de fentanilo y reinicias el propofol con una jeringa nueva (dosis según protocolo local).\n\n' +
-        'Dos minutos después el paciente está más tranquilo (TA 138/83, FC 100), pero sigue respirando: ahora hace **esfuerzos regulares, unos 22 por minuto**. El respirador sigue en controlado puro a 16: en la curva de flujo se siguen viendo los esfuerzos fuera de fase y el **VTE sigue variando entre unos 340 y 630 ml**. EtCO₂ 23 mmHg.',
+        'Dos minutos después el paciente está más tranquilo (TA 139/84, FC 101), pero sigue respirando: ahora hace **esfuerzos regulares, unos 22 por minuto**. El respirador sigue en controlado puro a 16: en la curva de flujo se siguen viendo los esfuerzos fuera de fase y el **VTE sigue variando entre unos 340 y 630 ml**. EtCO₂ 23 mmHg.',
       pregunta: 'Mientras la sedación hace efecto, ¿qué haces con el respirador?',
       opciones: [
         {
@@ -300,12 +300,12 @@ export const caso08: Caso = {
       saltoTiempo: 180,
       narrativa:
         'Con el trigger a 2 L/min el monitor cambia: todos los ciclos aparecen marcados como **disparados por el paciente** y la **FR total es de 22**, la suya. Las curvas de flujo y volumen vuelven a ser regulares, ciclo tras ciclo iguales, y la Ppico sigue en 17 cmH₂O.\n\n' +
-        'Pero fíjate en los números: **VTE de unos 560 ml** (≈ 7 ml/kg de peso ideal), **VM 12 L/min**, y el **EtCO₂ ha bajado a 17 mmHg**. SpO₂ 99 %. TA 138/83, FC 102.',
+        'Pero fíjate en los números: **VTE de unos 560 ml** (≈ 7 ml/kg de peso ideal), **VM de unos 11 L/min**, y el **EtCO₂ ha bajado a 17 mmHg**. SpO₂ 99 %. TA 138/83, FC 102.',
       pregunta: '¿Qué te dicen estos números y qué ajustas?',
       opciones: [
         {
           texto:
-            'Está sincronizado, pero hiperventila: a 22 rpm con ΔP 12 cada ciclo entra con 560 ml y la VM de 12 L/min baja el EtCO₂ a 17, peligroso en un TCE. Ajusto la sedoanalgesia hasta una FR de 16–18 y bajo la ΔP a 10 para un VTE de ≈ 6 ml/kg, buscando EtCO₂ 32–35.',
+            'Está sincronizado, pero hiperventila: a 22 rpm con ΔP 12 cada ciclo entra con 560 ml y la VM de unos 11 L/min baja el EtCO₂ a 17, peligroso en un TCE. Ajusto la sedoanalgesia hasta una FR de 16–18 y bajo la ΔP a 10 para un VTE de ≈ 6 ml/kg, buscando EtCO₂ 32–35.',
           correcta: true,
           explicacion:
             'En asistido la FR la pone el paciente y el volumen lo pone la ΔP más su esfuerzo: la combinación de 22 rpm y 560 ml da una hipocapnia grave, con vasoconstricción cerebral en un TCE. ' +
@@ -350,12 +350,12 @@ export const caso08: Caso = {
       // Tiempo para que la sedación ajustada y la nueva ΔP se reflejen en el EtCO₂.
       saltoTiempo: 180,
       narrativa:
-        'Tras ajustar la sedoanalgesia y bajar la ΔP a 10: **FR total 18, todos los ciclos disparados por el paciente**, **VTE de unos 435 ml** (≈ 6 ml/kg de peso ideal), VM 7,8 L/min, **Ppico 15 cmH₂O**, **EtCO₂ 32 mmHg**, SpO₂ 99 % con FiO₂ 0,5. Curvas regulares, sin esfuerzos fuera de fase. TA 130/78, FC 90. El paciente está tranquilo, sin tos. Quedan unos 10 minutos de vuelo.',
+        'Tras ajustar la sedoanalgesia y bajar la ΔP a 10: **FR total 18, todos los ciclos disparados por el paciente**, **VTE de unos 435 ml** (≈ 5,7 ml/kg de peso ideal, en el objetivo de 6), VM 7,6 L/min, **Ppico 15 cmH₂O**, **EtCO₂ 32 mmHg**, SpO₂ 99 % con FiO₂ 0,5. Curvas regulares, sin esfuerzos fuera de fase. TA 130/78, FC 90. El paciente está tranquilo, sin tos. Quedan unos 10 minutos de vuelo.',
       pregunta: '¿Qué plan dejas para el resto del traslado?',
       opciones: [
         {
           texto:
-            'Mantener PC asistido con FR de respaldo 16 (por debajo de la del paciente), sedoanalgesia continua comprobando bomba y vía, bajar la FiO₂ a 0,4 para SpO₂ > 94 %, vigilar en el monitor FR total, VTE y EtCO₂, y si hay deterioro brusco desconectar y ventilar con bolsa (DOPE).',
+            'Mantener PC asistido con FR de respaldo 16 (por debajo de la del paciente), sedoanalgesia continua comprobando bomba y vía, bajar la FiO₂ a 0,4 para SatO₂ > 90 % (en el TCE, con margen: ≥ 94 %), vigilar en el monitor FR total, VTE y EtCO₂, y si hay deterioro brusco desconectar y ventilar con bolsa (DOPE).',
           correcta: true,
           explicacion:
             'La situación es la deseada: sincronía (FR total = FR del paciente), VTE de 6 ml/kg con Ppico 15 y normocapnia. Hay que mantener lo que lo ha conseguido (sedoanalgesia continua y trigger activo), ' +

@@ -168,7 +168,8 @@ export const caso03: Caso = {
           correcta: true,
           explicacion:
             'Es la maniobra diagnóstica y terapéutica de la hiperinsuflación dinámica: al desconectar, el pulmón se vacía del volumen atrapado, cae la presión intratorácica, vuelve el retorno venoso y la TA remonta en segundos. Si la TA no mejora al desconectar, hay que pensar en otra causa (neumotórax, hipovolemia, fármacos). ' +
-            'La ecografía con deslizamiento bilateral ya hacía improbable el neumotórax. Con la paciente oxigenada (SpO₂ 99 %) la apnea de 30–60 s es segura; la hipercapnia transitoria es el precio asumible.',
+            'La ecografía con deslizamiento bilateral ya hacía improbable el neumotórax. Con la paciente oxigenada (SpO₂ 99 %) la apnea de 30–60 s es segura; la hipercapnia transitoria es el precio asumible. ' +
+            'Es la regla de oro del deterioro brusco adaptada al obstructivo: desconectar y, tras dejar espirar, ventilar con bolsa a FiO₂ 1,0. Si mejora, el problema estaba en el respirador (aquí, el Te insuficiente que programamos); si no mejora, hay que buscarlo en el paciente o en el tubo (DOPE: Desplazamiento, Obstrucción, Pneumotórax, Equipo).',
           etiquetaTema: 'auto-PEEP',
         },
         {
@@ -248,7 +249,7 @@ export const caso03: Caso = {
       narrativa:
         'Con **Vt 340, FR 12 y flujo 60 L/min**: TA **122/76**, FC 111. Con las pausas: **Pplat ≈ 13 cmH₂O**, PEEP total ≈ 7 (auto-PEEP ≈ 2) y el flujo espiratorio ahora sí llega prácticamente a cero antes del siguiente ciclo (Te ≈ 4,7 s). ' +
         'Pero la **alarma de presión salta a cada ciclo: Ppico 43 cmH₂O** (gradiente ≈ 30). Volumen minuto 4,0 L/min.\n\n' +
-        'A los 20 minutos, la gasometría de control muestra **PaCO₂ 76 mmHg** (EtCO₂ 68) con acidosis respiratoria, pH por encima del umbral que fija vuestro protocolo para la hipercapnia permisiva. SpO₂ 99 %.',
+        'A los 20 minutos, la gasometría de control muestra **PaCO₂ 74 mmHg** (EtCO₂ 66) con acidosis respiratoria, pH por encima del umbral que fija vuestro protocolo para la hipercapnia permisiva. SpO₂ 99 %.',
       pregunta: 'La enfermera te pregunta qué hacer con la alarma de presión y con ese CO₂. ¿Qué respondes?',
       opciones: [
         {
@@ -293,7 +294,7 @@ export const caso03: Caso = {
       titulo: 'Una hora después',
       narrativa:
         'Tras una hora de tratamiento según protocolo, la auscultación mejora. Con la misma programación (Vt 340, FR 12, flujo 60): **Ppico 32 cmH₂O**, Pplat ≈ 12, gradiente ≈ 20 (R ≈ 20 cmH₂O/L/s), PEEP total ≈ 5,5 (auto-PEEP ≈ 0,5) y el flujo espiratorio llega a cero con margen. TA 126/77, FC 107. ' +
-        'La gasometría sigue mostrando **PaCO₂ 76 mmHg** (EtCO₂ 68).',
+        'La gasometría sigue mostrando **PaCO₂ 74 mmHg** (EtCO₂ 66).',
       pregunta: '¿Qué haces ahora con el respirador?',
       pista: 'Si cambias la FR, repite la pausa espiratoria y mira si el flujo espiratorio sigue llegando a cero.',
       opciones: [
@@ -301,7 +302,7 @@ export const caso03: Caso = {
           texto: 'Subir la FR de forma escalonada (p. ej. a 16) comprobando con la pausa espiratoria que la auto-PEEP se mantiene por debajo de 2 cmH₂O y que el flujo espiratorio sigue llegando a cero; repetir gasometría.',
           correcta: true,
           explicacion:
-            'La obstrucción ha cedido (gradiente 30 → 20, auto-PEEP ≈ 0,5): ahora hay margen de Te para aumentar la FR y bajar el CO₂ de forma progresiva. Con FR 16 el Te es de ≈ 3,4 s, la auto-PEEP queda en ≈ 1 cmH₂O y la PaCO₂ baja hacia 57 mmHg. ' +
+            'La obstrucción ha cedido (gradiente 30 → 20, auto-PEEP ≈ 0,5): ahora hay margen de Te para aumentar la FR y bajar el CO₂ de forma progresiva. Con FR 16 el Te es de ≈ 3,4 s, la auto-PEEP queda en ≈ 1 cmH₂O y la PaCO₂ baja hacia 55 mmHg. ' +
             'Cada subida de FR se valida en el monitor: pausa espiratoria y curva de flujo. Si el flujo espiratorio vuelve a cortarse antes de cero, se ha ido demasiado lejos.',
           etiquetaTema: 'ventilación y CO2',
         },
@@ -325,7 +326,7 @@ export const caso03: Caso = {
           texto: 'No tocar nada hasta que la resistencia sea normal: la hipercapnia permisiva es segura.',
           correcta: false,
           explicacion:
-            'La hipercapnia permisiva es un peaje, no un objetivo: en cuanto el monitor muestra margen espiratorio (auto-PEEP ≈ 0,5, flujo espiratorio a cero), lo correcto es ir reduciéndola de forma escalonada. Mantener horas una PaCO₂ de 76 sin necesidad prolonga la acidosis y la sedación profunda.',
+            'La hipercapnia permisiva es un peaje, no un objetivo: en cuanto el monitor muestra margen espiratorio (auto-PEEP ≈ 0,5, flujo espiratorio a cero), lo correcto es ir reduciéndola de forma escalonada. Mantener horas una PaCO₂ de 74 sin necesidad prolonga la acidosis y la sedación profunda.',
           etiquetaTema: 'ventilación y CO2',
         },
       ],
@@ -334,7 +335,7 @@ export const caso03: Caso = {
   ],
   puntosClave: [
     'Con las pausas se separa todo: la inspiratoria da la Pplat (presión alveolar) y el gradiente Ppico − Pplat (resistencia × flujo); la espiratoria da la PEEP total y, restando la PEEP programada, la auto-PEEP. El flujo espiratorio que no llega a cero es el aviso más precoz de atrapamiento.',
-    'La hipotensión del asmático ventilado es, hasta que se demuestre lo contrario, hiperinsuflación dinámica: la auto-PEEP sube la presión intratorácica y hunde el retorno venoso. Desconectar y dejar espirar (comprimiendo el tórax) la confirma y la trata en segundos; la ecografía con deslizamiento bilateral aleja el neumotórax.',
+    'La hipotensión del asmático ventilado es, hasta que se demuestre lo contrario, hiperinsuflación dinámica: la auto-PEEP sube la presión intratorácica y hunde el retorno venoso. Desconectar y dejar espirar (comprimiendo el tórax) la confirma y la trata en segundos; la ecografía con deslizamiento bilateral aleja el neumotórax. Es la regla de oro del deterioro brusco (desconectar y ventilar con bolsa; si mejora, el problema era del respirador o del circuito; si no, del paciente o del tubo: DOPE), con el matiz de que en el obstructivo primero hay que dejar que termine de espirar.',
     'Programación obstructiva: la FR es la palanca principal (manda el Te), el flujo alto acorta el Ti, el Vt se mantiene en 6 ml/kg de peso ideal y la I:E se alarga muy por encima de 1:4–1:5. Subir la FR para bajar el CO₂ empeora el atrapamiento y no baja el CO₂.',
     'Una Ppico alta es aceptable mientras la Pplat esté controlada (< 30): el gradiente es presión resistiva que no llega al alvéolo. La hipercapnia es permisiva mientras el pH lo tolere y no haya contraindicación.',
     'Cuando la obstrucción cede (gradiente y auto-PEEP bajan), la FR se sube de forma escalonada validando cada cambio con la pausa espiratoria y la curva de flujo.',

@@ -129,7 +129,7 @@ export const caso01: Caso = {
           texto: 'Hay una fuga en el circuito: por eso entra menos volumen.',
           correcta: false,
           explicacion:
-            'Con fuga, el VTE sería menor que el VTI y la curva de volumen no volvería a cero; además la presión tendería a bajar. Aquí VTI y VTE coinciden y la presión se mantiene: no hay fuga.',
+            'Con fuga, el VTE sería menor que el VTI y la curva de volumen no volvería a cero; en PC la presión se mantiene (el respirador aporta más flujo para compensar la fuga), pero el flujo inspiratorio no llegaría a cero. Aquí VTI y VTE coinciden y el flujo inspiratorio sí llega a cero: no hay fuga.',
           etiquetaTema: 'fuga y desconexión',
         },
         {

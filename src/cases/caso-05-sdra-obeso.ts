@@ -72,7 +72,7 @@ export const caso05: Caso = {
       narrativa:
         'Paciente sedada y relajada (dosis según protocolo local), en **volumen control: Vt 660 ml, FR 16, flujo 45 L/min (0,75 L/s), pausa inspiratoria 0,3 s, PEEP 8, FiO₂ 1,0**.\n\n' +
         'El monitor muestra **Ppico 41 cmH₂O** y, gracias a la pausa programada, una meseta clara: **Pplat 32 cmH₂O**. VTE 664 ml, volumen minuto 10,6 L/min, **SpO₂ 91 %** con FiO₂ 1,0, EtCO₂ 24 mmHg. ' +
-        'TA 107/62, FC 119. Gasometría a los diez minutos: pH 7,50, PaCO₂ 28 mmHg, PaO₂ 62 mmHg (P/F ≈ 62), bicarbonato 22 mmol/L.\n\n' +
+        'TA 107/62, FC 119. Gasometría a los diez minutos: pH 7,51, PaCO₂ 28 mmHg, PaO₂ 62 mmHg (P/F ≈ 62), bicarbonato 22 mmol/L.\n\n' +
         'El residente comenta que "está a 6 ml/kg y aun así la presión está alta, debe de ser por la obesidad".',
       pregunta: '¿Es adecuado el volumen corriente programado?',
       pista: 'Mira la meseta de la curva de presión durante la pausa inspiratoria: esa es la Pplat, la presión que ve el alvéolo.',
@@ -99,7 +99,7 @@ export const caso05: Caso = {
           texto: 'Lo bajo a 8 ml/kg de peso ideal (unos 420 ml): en una obesa la pared torácica pesa y hay que transigir un poco.',
           correcta: false,
           explicacion:
-            'El criterio es 6 ml/kg de peso ideal. Con 420 ml la Pplat bajaría a unos 23 cmH₂O, pero la driving pressure quedaría en 15 y seguiríamos por encima del objetivo. ' +
+            'El criterio es 6 ml/kg de peso ideal. Con 420 ml la Pplat bajaría a unos 23 cmH₂O y la driving pressure quedaría justo en el límite de 15 (evidencia complementaria, no criterio del curso), pero el Vt seguiría un tercio por encima del objetivo de 6 ml/kg sin ninguna razón que lo justifique. ' +
             'La pared torácica rígida de la obesidad se compensa con la PEEP, no con más volumen.',
           etiquetaTema: 'ventilación protectora',
         },
@@ -156,7 +156,7 @@ export const caso05: Caso = {
           texto: 'No cambio nada: es hipercapnia permisiva y forma parte de la ventilación protectora.',
           correcta: false,
           explicacion:
-            'La hipercapnia permisiva se acepta cuando ya se ha optimizado la FR y el pH se mantiene en un rango tolerable (habitualmente ≥ 7,20–7,25). Un pH de 7,13 con FR 20 no es permisivo: todavía hay margen de FR sin acortar el Te.',
+            'La hipercapnia permisiva se acepta cuando ya se ha optimizado la FR y el pH se mantiene en un rango tolerable (habitualmente ≥ 7,20–7,25, según protocolo local; no es un criterio del curso). Un pH de 7,13 con FR 20 no es permisivo: todavía hay margen de FR sin acortar el Te.',
           etiquetaTema: 'ventilación y CO2',
         },
       ],
@@ -264,7 +264,7 @@ export const caso05: Caso = {
           correcta: true,
           explicacion:
             'La hipoxemia del SDRA es por shunt: la sangre que atraviesa alvéolos colapsados no se oxigena por mucho oxígeno que llegue a los alvéolos abiertos. Por eso con PEEP 8 teníamos 91 % con FiO₂ 1,0 y con PEEP 14 tenemos 93 % con FiO₂ 0,6. ' +
-            'Perder la PEEP durante el traslado (o en cada desconexión) deshace el reclutamiento. El respirador de transporte debe reproducir la misma programación y hay que comprobar la SpO₂ tras conectarlo.',
+            'Perder la PEEP durante el traslado (o en cada desconexión) deshace el reclutamiento. El respirador de transporte debe reproducir la misma programación y hay que comprobar la SpO₂ tras conectarlo. Y si durante el traslado hay un deterioro brusco, la regla de oro: desconectar y ventilar con bolsa (con válvula de PEEP, para no desreclutar) a FiO₂ 1,0; si mejora, el problema está en el respirador o el circuito; si no, en la paciente (DOPE).',
           etiquetaTema: 'oxigenación',
         },
         {

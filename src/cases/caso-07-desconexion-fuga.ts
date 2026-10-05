@@ -103,7 +103,7 @@ export const caso07: Caso = {
           texto: 'Para el traslado quito el sensor de capnografía: añade espacio muerto y peso al tubo, y con la SpO₂ basta para vigilar la vía aérea.',
           correcta: false,
           explicacion:
-            'La SpO₂ tarda minutos en caer tras una desconexión o una extubación en un paciente preoxigenado; la capnografía avisa en el primer ciclo. Es el monitor obligatorio del paciente intubado durante cualquier traslado. El espacio muerto de un sensor mainstream es despreciable con este Vt.',
+            'La SpO₂ tarda minutos en caer tras una desconexión o una extubación en un paciente preoxigenado; la capnografía avisa en el primer ciclo. Es el monitor obligatorio del paciente intubado durante cualquier traslado. El espacio muerto de un sensor en línea (mainstream) es despreciable con este Vt.',
           etiquetaTema: 'capnografía',
         },
         {
@@ -122,7 +122,7 @@ export const caso07: Caso = {
       titulo: 'En la sala del TC',
       narrativa:
         'Pasáis al paciente a la camilla de traslado y llegáis a la sala del TC. No ha sonado ninguna alarma. Al mirar el respirador antes de pasarlo a la mesa ves: Ppico 17 cmH₂O (igual), **VTI 518 ml, VTE 411 ml, fuga 21 %**, VM 6,5 L/min. ' +
-        'EtCO₂ 31 mmHg (antes 33), SpO₂ 99 %. TA 135/80, FC 84.\n\n' +
+        'EtCO₂ 31 mmHg (antes 33), SpO₂ 100 %. TA 135/80, FC 84.\n\n' +
         'En la curva de **volumen**, la rama espiratoria **no baja hasta la línea de base**: se queda a mitad de camino y el respirador la reinicia a 0 en el siguiente ciclo (un "escalón" al final de cada espiración). El flujo espiratorio llega a 0 y no hay esfuerzos del paciente.',
       pregunta: '¿Qué indican estas cifras y la curva de volumen?',
       pista: 'Compara VTI con VTE y mira dónde termina la curva de volumen al final de la espiración.',
@@ -165,7 +165,7 @@ export const caso07: Caso = {
       titulo: 'Fuga evidente',
       narrativa:
         'Mientras lo pasáis a la mesa del TC salta la **alarma de VTE bajo**. En el respirador: Ppico 17 cmH₂O (sigue igual), **VTI ≈ 1.030 ml, VTE ≈ 245 ml, fuga 76 %**, **VM 3,7 L/min**. ' +
-        'El capnograma ha perdido la meseta y el **EtCO₂ ha bajado a unos 8 mmHg**. Se oye un **gorgoteo en la boca** con cada insuflación. SpO₂ 98 %. TA 135/80, FC 84.\n\n' +
+        'El capnograma ha perdido la meseta y el **EtCO₂ ha bajado a unos 8 mmHg**. Se oye un **gorgoteo en la boca** con cada insuflación. SpO₂ todavía 100 %. TA 135/80, FC 84.\n\n' +
         'Haces una pausa inspiratoria: la presión **cae durante la pausa hasta ≈ 6 cmH₂O** en vez de mantenerse.',
       pregunta: '¿Qué haces?',
       pista: 'Fíjate en que la Ppico es la misma de siempre: en PC el respirador la mantiene aunque la mayor parte del gas se escape.',
@@ -175,7 +175,8 @@ export const caso07: Caso = {
           correcta: true,
           explicacion:
             'Con una fuga del 76 % el paciente recibe mucho menos de lo que marca el VTI y el EtCO₂ diluido lo refleja. La búsqueda es sistemática y ordenada, del paciente al respirador, porque la fuga puede estar en cualquier punto: balón desinflado o roto, tubo ascendido con el balón en la glotis, conexión suelta, filtro agrietado, tubuladura pinzada o válvula espiratoria mal montada. ' +
-            'El gorgoteo en la boca y la presión que cae durante la pausa apuntan al balón o a la posición del tubo.',
+            'El gorgoteo en la boca y la presión que cae durante la pausa apuntan al balón o a la posición del tubo. ' +
+            'Si el paciente se deteriora mientras buscas (desaturación), regla de oro: desconectar y ventilar con bolsa por el tubo. Si la bolsa ventila bien, el problema estaba en el circuito o el respirador; si también fuga (gorgoteo, el tórax no se expande), está en el tubo o el balón (la D de DOPE) y hay que asegurar la vía aérea.',
           etiquetaTema: 'fuga y desconexión',
         },
         {
@@ -191,16 +192,16 @@ export const caso07: Caso = {
           texto: 'Cambiar a volumen control con 450 ml: así el respirador garantiza el volumen aunque haya fuga.',
           correcta: false,
           explicacion:
-            'En VC el respirador empuja 450 ml hacia el circuito, pero con una fuga de este tamaño casi todo se escapa: el VTE cae a unos 30 ml, la presión no sube (Ppico 10) y el paciente se queda sin ventilación. Ningún modo compensa una fuga grande; hay que localizarla y corregirla.',
+            'En VC el respirador empuja 450 ml hacia el circuito, pero con una fuga de este tamaño casi todo se escapa: el VTE cae a unos 20 ml, la presión apenas sube (Ppico 13) y el paciente se queda sin ventilación. Ningún modo compensa una fuga grande; hay que localizarla y corregirla.',
           etiquetaTema: 'fuga y desconexión',
-          consecuencia: 'En VC con esta fuga el VTE cae a unos 30 ml con Ppico 10 cmH₂O: el volumen programado se va por la fuga.',
+          consecuencia: 'En VC con esta fuga el VTE cae a unos 20 ml con Ppico 13 cmH₂O: el volumen programado se va por la fuga.',
           transicionConsecuencia: { respirador: { modo: 'VC', vt: 0.45, flujo: 0.75, pausa: 0.3 } },
         },
         {
           texto: 'Subir la FiO₂ a 1,0, hacer el TC (son dos minutos) y revisar la fuga al volver al box.',
           correcta: false,
           explicacion:
-            'Con VM 3,7 L/min y EtCO₂ cayendo el paciente está hipoventilado ahora, y una fuga del 76 % que ha ido creciendo al movilizarlo puede acabar en extubación dentro del TC, donde nadie está a su lado. Primero se asegura la vía aérea; el TC espera.',
+            'Con una fuga del 76 % no sabes qué parte del VTI llega de verdad al pulmón (el VTE y el EtCO₂ ya no son fiables): el paciente puede estar hipoventilándose ahora mismo, y una fuga de este tamaño que ha ido creciendo al movilizarlo puede acabar en extubación dentro del TC, donde nadie está a su lado. Primero se asegura la vía aérea; el TC espera.',
           etiquetaTema: 'oxigenación',
         },
       ],
@@ -334,7 +335,7 @@ export const caso07: Caso = {
     'Una fuga se reconoce por VTE < VTI con presiones conservadas (en PC el respirador mantiene la Ppico aportando más flujo) y por una curva de volumen que no vuelve a 0. Una fuga pequeña suele preceder a una grande.',
     'En PC, la fuga grande inflama el VTI, hunde el VTE y el VM y diluye el EtCO₂; subir la presión o cambiar a VC no la compensa: hay que localizarla recorriendo el circuito del paciente al respirador.',
     'La capnografía es el monitor de la vía aérea: EtCO₂ 0 en un paciente con pulso = desconexión o extubación. En un paciente preoxigenado, la SpO₂ tarda minutos en avisar.',
-    'Ante la duda sobre la posición del tubo: retirarlo y ventilar con bolsa-mascarilla a FiO₂ 1,0; reintubar con inducción y relajación según protocolo local y confirmar con capnografía (onda sostenida).',
+    'Ante la duda sobre la posición del tubo: retirarlo y ventilar con bolsa-mascarilla a FiO₂ 1,0; reintubar con inducción y relajación según protocolo local y confirmar con capnografía (onda sostenida). Es la regla de oro del deterioro brusco: desconectar y ventilar con bolsa; si mejora, el problema era del respirador o del circuito; si no, del paciente o del tubo (DOPE).',
     'Antes de movilizar a un paciente intubado: sedación suficiente, tubo fijado con la marca anotada, balón medido, capnografía y alarmas activas, bolsa y material de intubación a mano.',
   ],
   expectativas: [

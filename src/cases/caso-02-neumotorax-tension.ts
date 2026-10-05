@@ -120,7 +120,7 @@ export const caso02: Caso = {
       titulo: 'Diez minutos de traslado',
       narrativa:
         'Vais por la autovía. Sin tocar nada en el respirador, la **Ppico ha subido a unos 25 cmH₂O**. El VTI y el VTE siguen en 450 ml y la curva de flujo (cuadrada) es idéntica a la de antes. ' +
-        'La curva de presión mantiene el mismo salto inicial, pero la rampa hasta el pico es **más empinada**. SpO₂ 98 %, EtCO₂ 30 mmHg. El manguito automático marca **TA 101/66, FC 113**.\n\n' +
+        'La curva de presión mantiene el mismo salto inicial, pero la rampa hasta el pico es **más empinada**. SpO₂ 98 %, EtCO₂ 29–30 mmHg. El manguito automático marca **TA 101/66, FC 113**.\n\n' +
         'El paciente sigue sedado y relajado, sin esfuerzos visibles en las curvas.',
       pregunta: 'Repites la pausa inspiratoria. ¿Qué te dicen las curvas y los números respecto a la referencia?',
       pista: 'Pausa inspiratoria otra vez y compara Pplat y gradiente con los que anotaste antes de salir.',
@@ -163,7 +163,7 @@ export const caso02: Caso = {
       titulo: 'Alarma de presión alta',
       narrativa:
         'Cinco minutos después salta la **alarma de presión alta**: la Ppico ha llegado a **33 cmH₂O** y el respirador recorta algún ciclo. Con la pausa inspiratoria, la **Pplat es de unos 26 cmH₂O** (gradiente ≈ 7, igual que siempre). ' +
-        'La **SpO₂ ha caído al 85 %** con FiO₂ 0,6 y el EtCO₂ baja a 28 mmHg aunque el volumen minuto sigue siendo el mismo (7,2 L/min). **FC 144**.\n\n' +
+        'La **SpO₂ ha caído al 85 %** con FiO₂ 0,6 y el EtCO₂ baja a 27 mmHg aunque el volumen minuto sigue siendo el mismo (7,2 L/min). **FC 144**.\n\n' +
         'El paciente sigue sedado y relajado. Las yugulares parecen ingurgitadas con la camilla a 30°.',
       pregunta: 'Deterioro brusco en un paciente ventilado. ¿Cuál es la primera medida?',
       pista: 'Mide la TA ahora (manguito o, si lo tienes, arterial): el último valor es de hace cinco minutos. Y recuerda la regla de oro.',
@@ -190,9 +190,9 @@ export const caso02: Caso = {
           texto: 'Bajar el Vt a 350 ml para que deje de sonar la alarma de presión.',
           correcta: false,
           explicacion:
-            'Bajar el Vt silencia la alarma (Ppico ≈ 28, Pplat ≈ 21) pero no trata nada: la compliance sigue en 22 ml/cmH₂O, la TA sigue en 74/56 y además hipoventilas a un TCE (el EtCO₂ sube hacia 43 mmHg). La alarma es un síntoma; hay que buscar la causa.',
+            'Bajar el Vt silencia la alarma (Ppico ≈ 28, Pplat ≈ 21) pero no trata nada: la compliance sigue en 22 ml/cmH₂O, la TA sigue en 74/56 y además hipoventilas a un TCE (el EtCO₂ sube hacia 42 mmHg). La alarma es un síntoma; hay que buscar la causa.',
           etiquetaTema: 'ventilación protectora',
-          consecuencia: 'La alarma deja de sonar, pero la TA sigue en 74/56, la SpO₂ no remonta y el EtCO₂ sube hacia 43 mmHg por la hipoventilación.',
+          consecuencia: 'La alarma deja de sonar, pero la TA sigue en 74/56, la SpO₂ no remonta y el EtCO₂ sube hacia 42 mmHg por la hipoventilación.',
           transicionConsecuencia: { respirador: { vt: 0.35 } },
         },
         {
