@@ -1,3 +1,5 @@
+// Mide fps con CPU x4 en móvil y el heap tras varios cambios de caso.
+// Uso: npx vite preview --port 4173 & PLAYWRIGHT_CHROMIUM_PATH=... node scripts/rendimiento.mjs
 import { chromium } from '@playwright/test';
 const b = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH });
 const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3 });
