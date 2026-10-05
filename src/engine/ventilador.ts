@@ -38,6 +38,7 @@ interface AcumuladorCiclo {
   nFlujoInsp: number;
   vMin: number;
   vMax: number;
+  pawFinEsp: number;
 }
 
 function acumuladorVacio(): AcumuladorCiclo {
@@ -57,6 +58,7 @@ function acumuladorVacio(): AcumuladorCiclo {
     nFlujoInsp: 0,
     vMin: Infinity,
     vMax: -Infinity,
+    pawFinEsp: 0,
   };
 }
 
@@ -239,7 +241,8 @@ export class Ventilador {
         this.tFase >= TE_MINIMO_TRIGGER &&
         Fl + fuga * paw > r.triggerFlujo / 60 &&
         pm > 0.3;
-      if (fin && this.pausaEspPendiente) {
+      if ((fin || trigger) && this.pausaEspPendiente) {
+        this.acum.disparadoPaciente = this.acum.disparadoPaciente || (trigger && !fin);
         this.cambiarFase('pausaEsp');
       } else if (fin || trigger) {
         this.finCiclo(trigger && !fin);
@@ -292,6 +295,7 @@ export class Ventilador {
     } else {
       this.acum.te += dt;
       this.acum.vteVol = this.vm;
+      if (this.fase === 'esp') this.acum.pawFinEsp = pawMedida;
     }
 
     this.t += dt;
@@ -347,7 +351,7 @@ export class Ventilador {
       ...this.medidas,
       ppico: a.ppico === -Infinity ? 0 : a.ppico,
       pmedia: a.n > 0 ? a.sumaP / a.n : 0,
-      peep: this.respirador.peep,
+      peep: a.te > 0 ? a.pawFinEsp : this.respirador.peep,
       vti: a.vti,
       vte,
       vmEsp,

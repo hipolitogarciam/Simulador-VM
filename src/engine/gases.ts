@@ -5,10 +5,18 @@ export interface EstadoGases {
   pao2: number;
   spo2: number;
   etco2: number;
+  /** FiO2 alveolar efectiva: sigue a la programada si hay ventilación y decae en apnea. */
+  fio2Alv?: number;
 }
 
 export function gasesIniciales(): EstadoGases {
   return { paco2: 40, pao2: 95, spo2: 97, etco2: 35 };
+}
+
+/** FiO2 alveolar efectiva en equilibrio: la programada si hay ventilación, ~0,08 en apnea. */
+export function fio2AlveolarEquilibrio(m: Medidas, p: Paciente, r: Respirador): number {
+  const va = ventilacionAlveolar(m, p);
+  return va < 0.3 ? 0.08 : r.fio2;
 }
 
 /**
@@ -55,9 +63,10 @@ export function pao2Equilibrio(
   r: Respirador,
   paco2: number,
   gastoRelativo: number,
+  fio2Alv = r.fio2,
 ): number {
   const PB = 713;
-  const pao2Alv = Math.max(20, r.fio2 * PB - paco2 / 0.8);
+  const pao2Alv = Math.max(20, fio2Alv * PB - paco2 / 0.8);
   const efectoPeep = Math.max(0.3, 1 - p.reclutabilidad * Math.max(0, r.peep - 5));
   const shunt = Math.min(0.9, Math.max(0, p.shunt * efectoPeep));
   const hb = p.hb;
@@ -97,14 +106,19 @@ export function avanzarGases(
   const paco2Eq = objetivos?.paco2 ?? paco2Equilibrio(m, p);
   const tauCO2 = Math.max(1, p.tauCO2);
   const paco2 = g.paco2 + (paco2Eq - g.paco2) * (1 - Math.exp(-dt / tauCO2));
-  const pao2Eq = pao2Equilibrio(p, r, paco2, gastoRelativo);
+  // Reserva alveolar de O2: en apnea la FiO2 alveolar decae en ~1 min; al ventilar se recupera en segundos.
+  const fio2Eq = fio2AlveolarEquilibrio(m, p, r);
+  const fio2Prev = g.fio2Alv ?? r.fio2;
+  const tauFio2 = fio2Eq < fio2Prev ? 60 : 10;
+  const fio2Alv = fio2Prev + (fio2Eq - fio2Prev) * (1 - Math.exp(-dt / tauFio2));
+  const pao2Eq = pao2Equilibrio(p, r, paco2, gastoRelativo, fio2Alv);
   const spo2EqModelo = saturacion(pao2Eq);
   const spo2Eq = objetivos?.spo2 ?? spo2EqModelo;
   const tauO2 = Math.max(1, p.tauSpO2);
   const spo2 = g.spo2 + (spo2Eq - g.spo2) * (1 - Math.exp(-dt / tauO2));
   const pao2 = pao2DesdeSaturacion(Math.min(99.9, spo2));
   const etco2 = Math.max(0, paco2 - gradienteCO2(p, m, gastoRelativo)) * factorFugaCapno(p, m);
-  return { paco2, pao2, spo2, etco2 };
+  return { paco2, pao2, spo2, etco2, fio2Alv };
 }
 
 /**

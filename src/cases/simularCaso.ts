@@ -1,7 +1,7 @@
 import type { Caso, MedidasPaso } from './schema';
 import type { Paciente, Respirador } from '../engine/types';
 import { simular } from '../engine/analisis';
-import { factorFugaCapno, gradienteCO2, paco2Equilibrio, pao2Equilibrio, saturacion } from '../engine/gases';
+import { factorFugaCapno, fio2AlveolarEquilibrio, gradienteCO2, paco2Equilibrio, pao2Equilibrio, saturacion } from '../engine/gases';
 import { gastoRelativo, objetivosHemo } from '../engine/hemodinamica';
 
 /**
@@ -40,7 +40,7 @@ export function medirEstado(
   let spo2 = 97;
   for (let i = 0; i < 3; i++) {
     const gasto = gastoRelativo(hemo, p);
-    const pao2 = pao2Equilibrio(p, r, paco2, gasto);
+    const pao2 = pao2Equilibrio(p, r, paco2, gasto, fio2AlveolarEquilibrio(m, p, r));
     spo2 = objetivosGases?.spo2 ?? saturacion(pao2);
     hemo = objetivosHemo(p, m, res.autoPeepReal, spo2);
   }
