@@ -29,6 +29,15 @@ Registro de las decisiones no especificadas en el encargo, con su justificación
   Con fuga grande o desconexión el sensor de la Y no ve gas espirado: EtCO₂ → 0.
 - Hemodinámica: TAS = basal − sensibilidad × (Pmedia − 8 + 1,5 × auto-PEEP) − 55 × compresión
   mediastínica; FC compensa la caída de TAS y la hipoxemia. τ ≈ 15 s.
+- Fuga grande o desconexión: el respirador tiene un flujo máximo (2,5 L/s) y un flujo de base para
+  la PEEP (0,5 L/s); si la fuga exige más, la presión programada no se alcanza y la PEEP cae. Así la
+  desconexión muestra presiones ≈ 0, VTI inflado (lo que el respirador empuja al circuito abierto) y
+  VTE ≈ 0 sin reglas especiales.
+- La ventilación alveolar se calcula con el volumen que entra en el pulmón (no con el VTE medido en
+  la Y): una fuga de circuito en PC no cambia la PaCO₂, pero diluye el EtCO₂ que ve el sensor.
+- La curva de presión muestra las "muescas" del esfuerzo del paciente (30 % de Pmus) en PC/PS y en
+  espiración en todos los modos; los valores numéricos (Ppico, Pmedia) no incluyen esa perturbación.
+  Con el paciente activo las pausas no dan valores fiables, como en un respirador real.
 - Transiciones: los parámetros del respirador cambian de golpe (como al girar el mando); los del
   paciente en rampa suave (`duracion`, 8 s por defecto); gases y hemodinámica siguen su τ.
 

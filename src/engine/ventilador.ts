@@ -36,6 +36,8 @@ interface AcumuladorCiclo {
   cicladoPorTiMax: boolean;
   flujoInspMedio: number;
   nFlujoInsp: number;
+  vMin: number;
+  vMax: number;
 }
 
 function acumuladorVacio(): AcumuladorCiclo {
@@ -53,11 +55,17 @@ function acumuladorVacio(): AcumuladorCiclo {
     cicladoPorTiMax: false,
     flujoInspMedio: 0,
     nFlujoInsp: 0,
+    vMin: Infinity,
+    vMax: -Infinity,
   };
 }
 
 /** Fracción del esfuerzo muscular que se ve en la curva de presión (muescas y picos). */
 const MUESCA_ESFUERZO = 0.3;
+/** Flujo máximo que puede entregar el respirador en presión (L/s). */
+const FLUJO_MAX = 2.5;
+/** Flujo de base disponible para mantener la PEEP en espiración (L/s). */
+const FLUJO_BASE = 0.5;
 const DURACION_PAUSA_INSP = 1.0;
 const DURACION_PAUSA_ESP = 1.5;
 const TE_MINIMO_TRIGGER = 0.3;
@@ -179,8 +187,12 @@ export class Ventilador {
       } else {
         const nivel = r.modo === 'PC' ? r.deltaP : r.ps;
         paw = r.peep + nivel * Math.min(1, this.tFase / Math.max(0.02, r.rampa));
+        // Si la fuga exige más flujo del que da el respirador, la presión no se alcanza.
+        if ((paw - Pa) / R + fuga * paw > FLUJO_MAX) {
+          paw = (FLUJO_MAX + Pa / R) / (1 / R + fuga);
+        }
         Fl = (paw - Pa) / R;
-        Fm = Fl + fuga * paw;
+        Fm = Math.min(FLUJO_MAX, Fl + fuga * paw);
         if (r.modo === 'PC') {
           if (this.tFase >= tInsp - 1e-9) {
             this.cambiarFase(this.pausaInspPendiente ? 'pausaInsp' : 'esp');
@@ -214,7 +226,8 @@ export class Ventilador {
         this.cambiarFase('esp');
       }
     } else if (this.fase === 'esp') {
-      paw = r.peep;
+      // La PEEP se mantiene con el flujo de base; con fuga grande (desconexión) cae.
+      paw = fuga * r.peep > FLUJO_BASE ? FLUJO_BASE / Math.max(fuga, 1e-6) : r.peep;
       Fl = (paw - Pa) / Rx;
       Fm = Math.min(0, Fl + fuga * paw);
       if (p.secreciones > 0 && Fm < -0.04) {
@@ -249,10 +262,6 @@ export class Ventilador {
     if (p.pmus.tipo === 'espiracionActiva' && this.fase !== 'esp' && Fl < 0) {
       pawMedida = paw + -Fl * 9 * p.pmusGanancia;
     }
-    // Cuando el paciente está desconectado o extubado, la Y está abierta al aire.
-    if (fuga >= 1) {
-      pawMedida = paw * 0.05;
-    }
     // Presión mostrada en la curva: el esfuerzo del paciente deja picos y muescas que el
     // servocontrol de presión (PC/PS) o la válvula espiratoria no compensan del todo.
     // En VC durante la inspiración la Paw ya refleja el esfuerzo (Paw = F·R + Palv).
@@ -268,6 +277,8 @@ export class Ventilador {
     if (this.vm < 0) this.vm = 0;
 
     // Acumuladores del ciclo.
+    this.acum.vMin = Math.min(this.acum.vMin, this.V);
+    this.acum.vMax = Math.max(this.acum.vMax, this.V);
     this.acum.ppico = Math.max(this.acum.ppico, pawMedida);
     this.acum.sumaP += pawMedida;
     this.acum.n += 1;
@@ -348,6 +359,7 @@ export class Ventilador {
       fuga: a.vti > 0.02 ? Math.max(0, 1 - vte / a.vti) : 0,
       frEspontanea: fraccionEspontanea * frTotal,
       cicladoPorTiMax: a.cicladoPorTiMax,
+      vtPulmon: a.vMax > a.vMin ? a.vMax - a.vMin : 0,
       pplat,
       peepTotal,
       autoPeep: null,
@@ -390,6 +402,7 @@ export function medidasIniciales(): Medidas {
     fuga: 0,
     frEspontanea: 0,
     cicladoPorTiMax: false,
+    vtPulmon: 0,
   };
 }
 

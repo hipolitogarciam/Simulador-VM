@@ -11,9 +11,13 @@ export function gasesIniciales(): EstadoGases {
   return { paco2: 40, pao2: 95, spo2: 97, etco2: 35 };
 }
 
-/** Ventilación alveolar (L/min) a partir del VTE, el espacio muerto y la FR total. */
+/**
+ * Ventilación alveolar (L/min) a partir del volumen que entra en el pulmón, el espacio
+ * muerto y la FR total. Con fuga de circuito el VTE medido es menor que el real.
+ */
 export function ventilacionAlveolar(m: Medidas, p: Paciente): number {
-  const vtEfectivo = Math.max(0, m.vte - p.espacioMuerto);
+  const vt = m.vtPulmon > 0 ? m.vtPulmon : m.vte;
+  const vtEfectivo = Math.max(0, vt - p.espacioMuerto);
   return Math.max(0.05, vtEfectivo * Math.max(0, m.frTotal));
 }
 
@@ -99,9 +103,19 @@ export function avanzarGases(
   const tauO2 = Math.max(1, p.tauSpO2);
   const spo2 = g.spo2 + (spo2Eq - g.spo2) * (1 - Math.exp(-dt / tauO2));
   const pao2 = pao2DesdeSaturacion(Math.min(99.9, spo2));
-  // Desconexión/extubación o fuga grande: el sensor de la Y no ve gas espirado.
-  const fraccionEspirada = m.vti > 0.02 ? m.vte / m.vti : 1;
-  const factorFuga = p.extubado || p.fuga >= 1 ? 0 : Math.max(0, Math.min(1, (fraccionEspirada - 0.15) / 0.5));
-  const etco2 = Math.max(0, paco2 - gradienteCO2(p, m, gastoRelativo)) * factorFuga;
+  const etco2 = Math.max(0, paco2 - gradienteCO2(p, m, gastoRelativo)) * factorFugaCapno(p, m);
   return { paco2, pao2, spo2, etco2 };
+}
+
+/**
+ * Dilución del gas espirado que llega al sensor de la Y por la fuga del circuito:
+ * 1 sin fuga, algo menor con fuga inaparente, muy reducido con fuga grande y 0 en
+ * la desconexión o la extubación.
+ */
+export function factorFugaCapno(p: Paciente, m: Medidas): number {
+  if (p.extubado || p.fuga >= 1) return 0;
+  const fraccionEspirada = m.vti > 0.02 ? m.vte / m.vti : 1;
+  const fuga = 1 - fraccionEspirada;
+  const dilucion = Math.max(0, Math.min(1, (fraccionEspirada - 0.08) / 0.45));
+  return dilucion * (1 - 0.15 * Math.max(0, fuga));
 }

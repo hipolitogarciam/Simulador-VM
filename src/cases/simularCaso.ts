@@ -1,7 +1,7 @@
 import type { Caso, MedidasPaso } from './schema';
 import type { Paciente, Respirador } from '../engine/types';
 import { simular } from '../engine/analisis';
-import { gradienteCO2, paco2Equilibrio, pao2Equilibrio, saturacion } from '../engine/gases';
+import { factorFugaCapno, gradienteCO2, paco2Equilibrio, pao2Equilibrio, saturacion } from '../engine/gases';
 import { gastoRelativo, objetivosHemo } from '../engine/hemodinamica';
 
 /**
@@ -45,9 +45,7 @@ export function medirEstado(
     hemo = objetivosHemo(p, m, res.autoPeepReal, spo2);
   }
   const gasto = gastoRelativo(hemo, p);
-  const fraccionEspirada = m.vti > 0.02 ? m.vte / m.vti : 1;
-  const factorFuga = p.extubado || p.fuga >= 1 ? 0 : Math.max(0, Math.min(1, (fraccionEspirada - 0.15) / 0.5));
-  const etco2 = Math.max(0, paco2 - gradienteCO2(p, m, gasto)) * factorFuga;
+  const etco2 = Math.max(0, paco2 - gradienteCO2(p, m, gasto)) * factorFugaCapno(p, m);
   return {
     paso,
     ppico: m.ppico,

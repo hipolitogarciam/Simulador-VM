@@ -125,6 +125,8 @@ export interface Medidas {
   frEspontanea: number;
   /** Último ciclo terminado por Ti máximo (PS). */
   cicladoPorTiMax: boolean;
+  /** Volumen corriente que realmente entra en el pulmón (L); con fuga difiere del VTE medido. */
+  vtPulmon: number;
 }
 
 export interface Constantes {
