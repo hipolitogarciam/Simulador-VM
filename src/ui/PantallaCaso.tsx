@@ -20,10 +20,10 @@ export function PantallaCaso() {
     <div className="pantalla-caso">
       <div className="zona-monitores">
         <div className="pestanas" role="tablist" aria-label="Monitores">
-          <button type="button" role="tab" aria-selected={pestana === 'vent'} className={pestana === 'vent' ? 'activa' : ''} onClick={() => setPestana('vent')}>
+          <button type="button" role="tab" aria-selected={pestana === 'vent'} aria-controls="monitor-vent" className={pestana === 'vent' ? 'activa' : ''} onClick={() => setPestana('vent')}>
             Ventilador
           </button>
-          <button type="button" role="tab" aria-selected={pestana === 'const'} className={pestana === 'const' ? 'activa' : ''} onClick={() => setPestana('const')}>
+          <button type="button" role="tab" aria-selected={pestana === 'const'} aria-controls="monitor-const" className={pestana === 'const' ? 'activa' : ''} onClick={() => setPestana('const')}>
             Monitor
           </button>
         </div>

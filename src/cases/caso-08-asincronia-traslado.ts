@@ -300,7 +300,7 @@ export const caso08: Caso = {
       saltoTiempo: 180,
       narrativa:
         'Con el trigger a 2 L/min el monitor cambia: todos los ciclos aparecen marcados como **disparados por el paciente** y la **FR total es de 22**, la suya. Las curvas de flujo y volumen vuelven a ser regulares, ciclo tras ciclo iguales, y la Ppico sigue en 17 cmH₂O.\n\n' +
-        'Pero fíjate en los números: **VTE de unos 560 ml** (≈ 7 ml/kg de peso ideal), **VM de unos 11 L/min**, y el **EtCO₂ ha bajado a 17 mmHg**. SpO₂ 99 %. TA 138/83, FC 102.',
+        'Pero fíjate en los números: **VTE de unos 560 ml** (≈ 7 ml/kg de peso ideal), **VM de unos 11 L/min**, y el **EtCO₂ ha bajado a 17 mmHg**. SpO₂ 99–100 %. TA 139/84, FC 102.',
       pregunta: '¿Qué te dicen estos números y qué ajustas?',
       opciones: [
         {
@@ -316,7 +316,7 @@ export const caso08: Caso = {
           texto: 'Alargar el Ti a 1,4 s: con más tiempo inspiratorio sube la presión media y mejora la oxigenación.',
           correcta: false,
           explicacion:
-            'La oxigenación no es el problema (SpO₂ 99 %), sino la hiperventilación. Además, un Ti largo en un paciente despierto que quiere espirar antes produce espiración activa contra el respirador: una joroba de presión al final de la inspiración, con Ppico de unos 25 cmH₂O, y menos volumen.',
+            'La oxigenación no es el problema (SpO₂ 99–100 %), sino la hiperventilación. Además, un Ti largo en un paciente despierto que quiere espirar antes produce espiración activa contra el respirador: una joroba de presión al final de la inspiración, con Ppico de unos 25 cmH₂O, y menos volumen.',
           etiquetaTema: 'asincronía',
           consecuencia: 'Con Ti 1,4 s el paciente espira contra el respirador: aparece una joroba al final de la inspiración con Ppico de unos 25 cmH₂O.',
           transicionConsecuencia: {

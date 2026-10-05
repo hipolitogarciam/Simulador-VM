@@ -26,7 +26,8 @@ export function Inicio() {
     a.href = url;
     a.download = `progreso-vmi-${perfil.nombre.replace(/\s+/g, '_')}.json`;
     a.click();
-    URL.revokeObjectURL(url);
+    // Revocar de inmediato puede cancelar la descarga en algunos navegadores.
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   const copiarCodigo = async () => {
@@ -141,7 +142,18 @@ export function Inicio() {
               <button type="button" className="boton secundario" onClick={() => archivoRef.current?.click()}>
                 Elegir archivo JSON
               </button>
-              <input ref={archivoRef} type="file" accept="application/json,.json" hidden onChange={(e) => importarArchivo(e.target.files?.[0])} />
+              <input
+                ref={archivoRef}
+                type="file"
+                accept="application/json,.json"
+                hidden
+                aria-label="Archivo JSON de progreso"
+                data-testid="archivo-progreso"
+                onChange={(e) => {
+                  void importarArchivo(e.target.files?.[0]);
+                  e.target.value = '';
+                }}
+              />
             </div>
           </div>
         )}

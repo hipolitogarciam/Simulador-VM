@@ -15,8 +15,10 @@ export function PanelCaso() {
   useEffect(() => {
     if (!sesion || sesion.fase !== 'consecuencia' || sesion.finConsecuencia === null) return;
     const fin = sesion.finConsecuencia;
+    const calcular = () => Math.max(0, Math.ceil((fin - Date.now()) / 1000));
+    setRestante(calcular());
     const id = window.setInterval(() => {
-      const r = Math.max(0, Math.ceil((fin - Date.now()) / 1000));
+      const r = calcular();
       setRestante(r);
       if (r <= 0) terminarConsecuencia();
     }, 250);

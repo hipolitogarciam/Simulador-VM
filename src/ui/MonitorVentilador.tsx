@@ -91,7 +91,7 @@ export function MonitorVentilador({ compacto = false }: { compacto?: boolean }) 
   const f1 = (v: number | null) => (v === null ? '--' : v.toFixed(1));
 
   return (
-    <section className={`monitor monitor-vent ${compacto ? 'compacto' : ''}`} aria-label="Monitor del ventilador">
+    <section id="monitor-vent" className={`monitor monitor-vent ${compacto ? 'compacto' : ''}`} aria-label="Monitor del ventilador">
       <header className="monitor-cabecera">
         <span className="monitor-titulo">VENTILADOR · {r.modo}</span>
         <div className="alarmas" role="status" aria-live="polite">
@@ -106,8 +106,8 @@ export function MonitorVentilador({ compacto = false }: { compacto?: boolean }) 
           )}
         </div>
         <label className="interruptor" title="Sonido de alarmas">
-          <input type="checkbox" checked={sonido} onChange={(e) => setSonido(e.target.checked)} />
-          <span>🔔</span>
+          <input type="checkbox" checked={sonido} onChange={(e) => setSonido(e.target.checked)} aria-label="Sonido de alarmas" />
+          <span aria-hidden="true">🔔</span>
         </label>
       </header>
       <div className="monitor-cuerpo">
@@ -148,7 +148,7 @@ export function MonitorVentilador({ compacto = false }: { compacto?: boolean }) 
         )}
       </div>
       <footer className="monitor-pie">
-        <div className="programado" aria-label="Parámetros programados">
+        <div className="programado" role="group" aria-label="Parámetros programados">
           <span className="chip">{r.modo}</span>
           {r.modo === 'VC' && (
             <>

@@ -25,6 +25,44 @@ export const COLORES = {
 const HUECO_S = 0.35;
 
 /**
+ * Fondo (rejilla, líneas de referencia, etiquetas y título) cacheado en un canvas
+ * fuera de pantalla: el texto y la rejilla son lo más caro de dibujar en cada frame
+ * y solo cambian con el tamaño o la escala.
+ */
+const fondos = new Map<string, HTMLCanvasElement | OffscreenCanvas>();
+const MAX_FONDOS = 24;
+
+function fondoCacheado(
+  clave: string,
+  w: number,
+  h: number,
+  dpr: number,
+  pintar: (ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D) => void,
+): HTMLCanvasElement | OffscreenCanvas | null {
+  const existente = fondos.get(clave);
+  if (existente) return existente;
+  const pw = Math.max(1, Math.round(w * dpr));
+  const ph = Math.max(1, Math.round(h * dpr));
+  let lienzo: HTMLCanvasElement | OffscreenCanvas;
+  if (typeof OffscreenCanvas !== 'undefined') {
+    lienzo = new OffscreenCanvas(pw, ph);
+  } else if (typeof document !== 'undefined') {
+    lienzo = document.createElement('canvas');
+    lienzo.width = pw;
+    lienzo.height = ph;
+  } else {
+    return null;
+  }
+  const ctx = lienzo.getContext('2d') as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;
+  if (!ctx) return null;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  pintar(ctx);
+  if (fondos.size >= MAX_FONDOS) fondos.clear();
+  fondos.set(clave, lienzo);
+  return lienzo;
+}
+
+/**
  * Dibuja una curva con barrido continuo: x proporcional a (t mod SWEEP).
  * La traza antigua se conserva a la derecha de la cabeza, como en un monitor real.
  */
@@ -38,45 +76,54 @@ export function dibujarBarrido(
   opciones: { titulo?: string; unidad?: string; ancho?: number } = {},
 ): void {
   const { ctx, w, h } = c;
-  ctx.fillStyle = COLORES.fondo;
-  ctx.fillRect(0, 0, w, h);
+  // Un canvas oculto (display: none) mide 1×1: no hay nada que dibujar.
+  if (w < 2 || h < 2) return;
   const margenIzq = 34;
   const margenSup = 6;
   const margenInf = 4;
   const ancho = w - margenIzq - 4;
   const alto = h - margenSup - margenInf;
   const y = (v: number) => margenSup + alto - ((v - escala.min) / (escala.max - escala.min)) * alto;
-
-  // Rejilla y líneas de referencia.
-  ctx.strokeStyle = COLORES.rejilla;
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  for (let s = 0; s <= SWEEP_S; s += 1) {
-    const x = margenIzq + (s / SWEEP_S) * ancho;
-    ctx.moveTo(x, margenSup);
-    ctx.lineTo(x, margenSup + alto);
-  }
-  ctx.stroke();
-  ctx.font = '10px ui-monospace, Menlo, monospace';
-  ctx.fillStyle = COLORES.texto;
-  ctx.textAlign = 'right';
   const lineas = escala.lineas ?? [escala.min, 0, escala.max];
-  for (const v of lineas) {
-    if (v < escala.min || v > escala.max) continue;
-    const yy = y(v);
-    ctx.strokeStyle = v === 0 ? '#34475a' : COLORES.rejilla;
-    ctx.beginPath();
-    ctx.moveTo(margenIzq, yy);
-    ctx.lineTo(w, yy);
-    ctx.stroke();
-    ctx.fillText(String(v), margenIzq - 4, yy + 3);
-  }
-  if (opciones.titulo) {
-    ctx.textAlign = 'left';
-    ctx.fillStyle = color;
-    ctx.font = 'bold 11px ui-sans-serif, system-ui, sans-serif';
-    ctx.fillText(`${opciones.titulo}${opciones.unidad ? ` (${opciones.unidad})` : ''}`, margenIzq + 4, margenSup + 11);
-  }
+
+  const pintarFondo = (g: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D) => {
+    g.fillStyle = COLORES.fondo;
+    g.fillRect(0, 0, w, h);
+    // Rejilla y líneas de referencia.
+    g.strokeStyle = COLORES.rejilla;
+    g.lineWidth = 1;
+    g.beginPath();
+    for (let s = 0; s <= SWEEP_S; s += 1) {
+      const x = margenIzq + (s / SWEEP_S) * ancho;
+      g.moveTo(x, margenSup);
+      g.lineTo(x, margenSup + alto);
+    }
+    g.stroke();
+    g.font = '10px ui-monospace, Menlo, monospace';
+    g.fillStyle = COLORES.texto;
+    g.textAlign = 'right';
+    for (const v of lineas) {
+      if (v < escala.min || v > escala.max) continue;
+      const yy = y(v);
+      g.strokeStyle = v === 0 ? '#34475a' : COLORES.rejilla;
+      g.beginPath();
+      g.moveTo(margenIzq, yy);
+      g.lineTo(w, yy);
+      g.stroke();
+      g.fillText(String(v), margenIzq - 4, yy + 3);
+    }
+    if (opciones.titulo) {
+      g.textAlign = 'left';
+      g.fillStyle = color;
+      g.font = 'bold 11px ui-sans-serif, system-ui, sans-serif';
+      g.fillText(`${opciones.titulo}${opciones.unidad ? ` (${opciones.unidad})` : ''}`, margenIzq + 4, margenSup + 11);
+    }
+  };
+  const dpr = ctx.getTransform().a || 1;
+  const clave = `${w}x${h}@${dpr}|${escala.min}|${escala.max}|${lineas.join(',')}|${opciones.titulo ?? ''}|${opciones.unidad ?? ''}|${color}`;
+  const fondo = fondoCacheado(clave, w, h, dpr, pintarFondo);
+  if (fondo) ctx.drawImage(fondo, 0, 0, w, h);
+  else pintarFondo(ctx);
 
   // Traza.
   const n = muestras.length;
@@ -86,8 +133,9 @@ export function dibujarBarrido(
   const xDe = (t: number) => margenIzq + ((t % SWEEP_S) / SWEEP_S) * ancho;
   ctx.lineWidth = opciones.ancho ?? 2;
   ctx.strokeStyle = color;
-  ctx.lineJoin = 'round';
-  ctx.lineCap = 'round';
+  // Uniones biseladas: con 800 puntos por traza las redondeadas cuestan bastante más y no se distinguen.
+  ctx.lineJoin = 'bevel';
+  ctx.lineCap = 'butt';
   ctx.beginPath();
   let xPrev = -1;
   let abierto = false;

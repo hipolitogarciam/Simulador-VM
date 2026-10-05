@@ -44,7 +44,7 @@ npm install
 npm run dev        # servidor de desarrollo
 npm test           # tests del motor y de los casos (Vitest)
 npm run build      # typecheck + build de producción en dist/
-npm run e2e        # Playwright: recorrido de un caso en móvil, tablet y escritorio
+npm run e2e        # Playwright: casos completos, modo libre, importación y robustez en móvil, tablet y escritorio
 npm run medidas    # tabla de medidas del motor para cada paso de cada caso
 ```
 
@@ -79,7 +79,7 @@ src/store/    estado de la app, bucle de simulación y persistencia (ProgressSto
 src/ui/       monitores en canvas, panel del caso, pantallas
 src/tests/    tests Vitest
 tests-e2e/    Playwright
-docs/         guía de autores, revisión clínica, hoja de ruta y capturas
+docs/         guía de autores, revisión clínica, hoja de ruta, informe de QA y capturas
 ```
 
 ## Criterios clínicos

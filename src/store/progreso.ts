@@ -62,9 +62,7 @@ export class LocalStorageProgressStore implements ProgressStore {
     try {
       const raw = globalThis.localStorage?.getItem(this.clave);
       if (!raw) return datosVacios();
-      const datos = JSON.parse(raw) as DatosProgreso;
-      if (!datos || datos.version !== 1 || !Array.isArray(datos.perfiles)) return datosVacios();
-      return datos;
+      return sanearDatos(JSON.parse(raw));
     } catch {
       return datosVacios();
     }
@@ -87,6 +85,77 @@ export class MemoriaProgressStore implements ProgressStore {
   guardar(datos: DatosProgreso): void {
     this.datos = structuredClone(datos);
   }
+}
+
+const ESTADOS: EstadoCaso[] = ['no iniciado', 'en curso', 'completado'];
+
+function esObjeto(v: unknown): v is Record<string, unknown> {
+  return typeof v === 'object' && v !== null && !Array.isArray(v);
+}
+
+function sanearRespuesta(v: unknown): RespuestaRegistrada | null {
+  if (!esObjeto(v) || typeof v.pasoId !== 'string' || typeof v.etiquetaTema !== 'string') return null;
+  return {
+    pasoId: v.pasoId,
+    opcion: typeof v.opcion === 'number' ? v.opcion : -1,
+    correcta: v.correcta === true,
+    etiquetaTema: v.etiquetaTema as EtiquetaTema,
+    fecha: typeof v.fecha === 'string' ? v.fecha : '',
+  };
+}
+
+function sanearIntento(v: unknown): Intento | null {
+  if (!esObjeto(v) || typeof v.inicio !== 'string') return null;
+  const respuestas = Array.isArray(v.respuestas) ? v.respuestas.map(sanearRespuesta).filter((r): r is RespuestaRegistrada => r !== null) : [];
+  const intento: Intento = { inicio: v.inicio, respuestas };
+  if (typeof v.fin === 'string') intento.fin = v.fin;
+  if (typeof v.puntuacion === 'number' && Number.isFinite(v.puntuacion)) intento.puntuacion = v.puntuacion;
+  return intento;
+}
+
+/** Devuelve un progreso de caso válido a partir de datos posiblemente corruptos. */
+export function sanearProgresoCaso(casoId: string, v: unknown): ProgresoCaso {
+  const base = progresoCasoVacio(casoId);
+  if (!esObjeto(v)) return base;
+  const intentos = Array.isArray(v.intentos) ? v.intentos.map(sanearIntento).filter((i): i is Intento => i !== null) : [];
+  return {
+    casoId,
+    estado: ESTADOS.includes(v.estado as EstadoCaso) ? (v.estado as EstadoCaso) : intentos.some((i) => i.fin) ? 'completado' : base.estado,
+    intentos,
+    mejorPuntuacion: typeof v.mejorPuntuacion === 'number' && Number.isFinite(v.mejorPuntuacion) ? v.mejorPuntuacion : null,
+    ultimoIntento: typeof v.ultimoIntento === 'string' ? v.ultimoIntento : null,
+    pasoActual: typeof v.pasoActual === 'number' && Number.isFinite(v.pasoActual) ? Math.max(0, Math.floor(v.pasoActual)) : 0,
+  };
+}
+
+function sanearCasos(v: unknown): Record<string, ProgresoCaso> {
+  const out: Record<string, ProgresoCaso> = {};
+  if (!esObjeto(v)) return out;
+  for (const [id, pc] of Object.entries(v)) out[id] = sanearProgresoCaso(id, pc);
+  return out;
+}
+
+/** Devuelve un perfil válido o null si los datos no tienen ni nombre. */
+export function sanearPerfil(v: unknown): Perfil | null {
+  if (!esObjeto(v) || typeof v.nombre !== 'string' || !v.nombre.trim()) return null;
+  return {
+    id: typeof v.id === 'string' && v.id ? v.id : nuevoPerfil(v.nombre).id,
+    nombre: v.nombre.trim(),
+    creado: typeof v.creado === 'string' ? v.creado : new Date().toISOString(),
+    casos: sanearCasos(v.casos),
+  };
+}
+
+/**
+ * Valida y repara los datos leídos del almacenamiento: perfiles sin nombre o sin
+ * estructura se descartan, los casos corruptos se reconstruyen y el perfil activo
+ * tiene que existir. Nunca lanza.
+ */
+export function sanearDatos(v: unknown): DatosProgreso {
+  if (!esObjeto(v) || v.version !== 1 || !Array.isArray(v.perfiles)) return datosVacios();
+  const perfiles = v.perfiles.map(sanearPerfil).filter((p): p is Perfil => p !== null);
+  const activo = typeof v.perfilActivo === 'string' && perfiles.some((p) => p.id === v.perfilActivo) ? v.perfilActivo : (perfiles[0]?.id ?? null);
+  return { version: 1, perfiles, perfilActivo: activo };
 }
 
 export function nuevoPerfil(nombre: string): Perfil {
@@ -171,14 +240,11 @@ export async function importarCodigo(codigo: string): Promise<Perfil> {
 
 export function validarPerfil(obj: unknown): Perfil {
   const raiz = obj as { version?: number; perfil?: unknown } | null;
-  const p = (raiz && typeof raiz === 'object' && 'perfil' in raiz ? raiz.perfil : raiz) as Partial<Perfil> | null;
-  if (!p || typeof p !== 'object' || typeof p.nombre !== 'string' || typeof p.casos !== 'object' || p.casos === null) {
+  const p = raiz && typeof raiz === 'object' && 'perfil' in raiz ? raiz.perfil : raiz;
+  if (!esObjeto(p) || typeof p.nombre !== 'string' || !esObjeto(p.casos)) {
     throw new Error('El archivo no contiene un perfil válido.');
   }
-  return {
-    id: typeof p.id === 'string' ? p.id : nuevoPerfil(p.nombre).id,
-    nombre: p.nombre,
-    creado: typeof p.creado === 'string' ? p.creado : new Date().toISOString(),
-    casos: p.casos as Record<string, ProgresoCaso>,
-  };
+  const perfil = sanearPerfil(p);
+  if (!perfil) throw new Error('El archivo no contiene un perfil válido.');
+  return perfil;
 }

@@ -76,7 +76,7 @@ export const caso03: Caso = {
       titulo: 'Recién conectada al respirador',
       narrativa:
         'Mujer de 28 años, **165 cm** y 60 kg, con asma casi fatal, intubada hace cinco minutos. El residente la ha conectado en **volumen control: Vt 450 ml, FR 20, flujo 30 L/min, PEEP 5, FiO₂ 0,6**, sin pausa inspiratoria, alarma de presión en 40 cmH₂O.\n\n' +
-        'Monitor: **Ppico 37 cmH₂O**, VTI = VTE 450 ml, SpO₂ 99 %, EtCO₂ 62 mmHg, FC 147. La curva de presión tiene un **salto inicial muy grande** antes de la rampa. ' +
+        'Monitor: **Ppico 37 cmH₂O**, VTI = VTE 450 ml, SpO₂ 99–100 %, EtCO₂ 62 mmHg, FC 147. La curva de presión tiene un **salto inicial muy grande** antes de la rampa. ' +
         'En la curva de flujo, la espiración desciende despacio y **no llega a cero antes de que empiece la siguiente inspiración**: el respirador corta el flujo espiratorio en unos −8 L/min. El capnograma tiene forma de aleta de tiburón.',
       pregunta: 'Pulsas la pausa inspiratoria. ¿Cómo interpretas la Ppico de 37 y lo que ves?',
       pista: 'Pausa inspiratoria: compara Ppico con Pplat. El gradiente es la presión que se pierde en la resistencia (R × flujo).',
@@ -249,7 +249,7 @@ export const caso03: Caso = {
       narrativa:
         'Con **Vt 340, FR 12 y flujo 60 L/min**: TA **122/76**, FC 111. Con las pausas: **Pplat ≈ 13 cmH₂O**, PEEP total ≈ 7 (auto-PEEP ≈ 2) y el flujo espiratorio ahora sí llega prácticamente a cero antes del siguiente ciclo (Te ≈ 4,7 s). ' +
         'Pero la **alarma de presión salta a cada ciclo: Ppico 43 cmH₂O** (gradiente ≈ 30). Volumen minuto 4,0 L/min.\n\n' +
-        'A los 20 minutos, la gasometría de control muestra **PaCO₂ 74 mmHg** (EtCO₂ 66) con acidosis respiratoria, pH por encima del umbral que fija vuestro protocolo para la hipercapnia permisiva. SpO₂ 99 %.',
+        'A los 20 minutos, la gasometría de control muestra **PaCO₂ 74 mmHg** (EtCO₂ 66) con acidosis respiratoria, pH por encima del umbral que fija vuestro protocolo para la hipercapnia permisiva. SpO₂ 99–100 %.',
       pregunta: 'La enfermera te pregunta qué hacer con la alarma de presión y con ese CO₂. ¿Qué respondes?',
       opciones: [
         {

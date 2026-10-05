@@ -6,6 +6,12 @@
   --texto: #e6edf3;
   --texto-2: #9fb3c8;
   --primario: #2f81f7;
+  /* Fondo de los botones primarios: el azul de acento no llega a 4,5:1 con texto blanco. */
+  --primario-boton: #1a63d6;
+  --primario-boton-hover: #1557bd;
+  /* Rojo y verde de fondo para texto blanco pequeño (≥ 4,5:1). */
+  --mal-fuerte: #cf222e;
+  --ok-fuerte: #1a7f37;
   --ok: #2ea043;
   --ok-fondo: #0f2a1a;
   --mal: #f85149;
@@ -153,13 +159,13 @@ textarea {
   cursor: default;
 }
 .boton.primario {
-  background: var(--primario);
-  border-color: var(--primario);
+  background: var(--primario-boton);
+  border-color: var(--primario-boton);
   color: #fff;
   font-weight: 600;
 }
 .boton.primario:hover:not(:disabled) {
-  background: #2a74e0;
+  background: var(--primario-boton-hover);
 }
 .boton.secundario {
   background: transparent;
@@ -171,7 +177,12 @@ textarea {
 }
 .boton:focus-visible,
 .opcion:focus-visible,
-.pestanas button:focus-visible {
+.pestanas button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+.interruptor:has(input:focus-visible) {
   outline: 2px solid #79b8ff;
   outline-offset: 2px;
 }
@@ -293,6 +304,7 @@ textarea {
   grid-area: caso;
   overflow-y: auto;
   min-height: 0;
+  min-width: 0;
 }
 
 .zona-monitores {
@@ -300,6 +312,7 @@ textarea {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  min-width: 0;
   gap: 10px;
 }
 
@@ -351,11 +364,11 @@ textarea {
   font-size: 0.75rem;
 }
 .alarma.ok {
-  color: #3f5b45;
+  color: #6f9a78;
   font-weight: 500;
 }
 .alarma.alta {
-  background: var(--mal);
+  background: var(--mal-fuerte);
   color: #fff;
   animation: parpadeo 1s steps(2) infinite;
 }
@@ -371,8 +384,20 @@ textarea {
 .interruptor {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   cursor: pointer;
+  /* Área táctil ampliada sin agrandar la cabecera (el monitor recorta lo que sobresale). */
+  min-width: 44px;
+  min-height: 36px;
+  margin: -5px 0;
+  border-radius: 8px;
+}
+.interruptor input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--primario);
 }
 
 .monitor-cuerpo {
@@ -419,7 +444,7 @@ textarea {
   animation: parpadeo 1s steps(2) infinite;
 }
 .valor.atenuado {
-  opacity: 0.45;
+  opacity: 0.5;
 }
 .valor-etiqueta {
   font-size: 0.7rem;
@@ -607,7 +632,7 @@ textarea {
   background: var(--ok-fondo);
 }
 .opcion.correcta .letra {
-  background: var(--ok);
+  background: var(--ok-fuerte);
   color: #fff;
 }
 .opcion.incorrecta {
@@ -615,7 +640,7 @@ textarea {
   background: var(--mal-fondo);
 }
 .opcion.incorrecta .letra {
-  background: var(--mal);
+  background: var(--mal-fuerte);
   color: #fff;
 }
 .opcion.inactiva {
@@ -676,6 +701,13 @@ textarea {
   flex-direction: column;
   gap: 4px;
   font-size: 0.9rem;
+  min-width: 0;
+}
+/* Las opciones largas de un <select> no deben ensanchar la página en móvil. */
+.controles select {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 .deslizador input[type='range'] {
   width: 100%;
@@ -713,6 +745,17 @@ textarea {
   }
   .zona-caso {
     overflow: visible;
+  }
+  /* Los monitores quedan fijos arriba: al enfocar o desplazar un control del panel
+     hay que dejar sitio para que no quede escondido debajo. */
+  .zona-caso .boton,
+  .zona-caso .opcion,
+  .zona-caso input,
+  .zona-caso select,
+  .zona-caso summary,
+  .zona-caso h1,
+  .zona-caso h2 {
+    scroll-margin-top: calc(46vh + 20px);
   }
 }
 
@@ -754,14 +797,23 @@ textarea {
   .monitores.pestana-const .monitor-vent {
     display: none;
   }
+  /* Ocho valores en dos columnas: en una sola no cabían (Pplat y PEEP total quedaban ocultos). */
   .monitor-cuerpo {
-    grid-template-columns: 1fr 96px;
+    grid-template-columns: 1fr 150px;
   }
   .numeros {
+    grid-template-columns: 1fr 1fr;
+    gap: 0 2px;
+    padding: 2px;
+  }
+  .numeros-const {
     grid-template-columns: 1fr;
   }
+  .valor {
+    padding: 2px 3px;
+  }
   .valor-numero {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
   }
   .detalle-medidas {
     display: none;
@@ -784,6 +836,15 @@ textarea {
   }
   .zona-monitores {
     max-height: var(--altura-monitores-movil);
+  }
+  .zona-caso .boton,
+  .zona-caso .opcion,
+  .zona-caso input,
+  .zona-caso select,
+  .zona-caso summary,
+  .zona-caso h1,
+  .zona-caso h2 {
+    scroll-margin-top: calc(var(--altura-monitores-movil) + 12px);
   }
 }
 

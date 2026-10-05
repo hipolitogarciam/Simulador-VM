@@ -36,7 +36,7 @@ export function MonitorConstantes({ compacto = false }: { compacto?: boolean }) 
   const tam = c.tani ? `(${c.tani.tam})` : '';
 
   return (
-    <section className={`monitor monitor-const ${compacto ? 'compacto' : ''}`} aria-label="Monitor de constantes">
+    <section id="monitor-const" className={`monitor monitor-const ${compacto ? 'compacto' : ''}`} aria-label="Monitor de constantes">
       <header className="monitor-cabecera">
         <span className="monitor-titulo">MONITOR</span>
         <div className="alarmas" role="status" aria-live="polite">

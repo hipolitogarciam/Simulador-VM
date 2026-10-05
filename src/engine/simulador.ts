@@ -47,6 +47,13 @@ interface RampaActiva {
 
 export const SWEEP_S = 8;
 export const FRECUENCIA_MUESTREO = 100;
+/**
+ * Periodo de integración de los gases (s). Sus constantes de tiempo son ≥ 1 s y su
+ * equilibrio solo depende de medidas por ciclo y de magnitudes lentas, así que
+ * integrarlos cada 50 ms (en vez de cada paso de 5 ms) da el mismo resultado con una
+ * décima parte del coste; esto es lo que hace asumibles los saltos de tiempo largos.
+ */
+const PERIODO_GASES = 0.05;
 
 /**
  * Simulador completo: respirador + pulmón + gases + hemodinámica + ondas del monitor.
@@ -72,6 +79,7 @@ export class Simulador {
   private alarmasActivas: Set<Alarma> = new Set();
   private autoPeepEstimada = 0;
   private volFinEsp = 0;
+  private acumGases = 0;
 
   constructor(paciente: Paciente, respirador: Respirador) {
     this.vent = new Ventilador({ ...paciente }, { ...respirador });
@@ -126,7 +134,9 @@ export class Simulador {
     if (tr.gases !== undefined) this.objetivosGases = tr.gases;
     if (tr.paciente) {
       const actual = this.rampa ? this.pacienteEnRampa(this.vent.T) : this.vent.paciente;
-      const hasta: Paciente = { ...actual, ...tr.paciente };
+      // Si interrumpe otra rampa, los parámetros que esta no toca siguen hacia su destino.
+      const destino = this.rampa ? this.rampa.hasta : actual;
+      const hasta: Paciente = { ...destino, ...tr.paciente };
       const duracion = tr.duracion ?? 8;
       if (duracion <= 0) {
         this.vent.paciente = hasta;
@@ -233,7 +243,11 @@ export class Simulador {
 
     // Gases y hemodinámica (lentos).
     const gasto = gastoRelativo(this.hemo, p);
-    this.gases = avanzarGases(this.gases, p, r, this.vent.medidas, gasto, DT, this.objetivosGases);
+    this.acumGases += DT;
+    if (this.acumGases >= PERIODO_GASES - 1e-9) {
+      this.gases = avanzarGases(this.gases, p, r, this.vent.medidas, gasto, this.acumGases, this.objetivosGases);
+      this.acumGases = 0;
+    }
     const obj = objetivosHemo(p, this.vent.medidas, this.autoPeepEstimada, this.gases.spo2);
     this.hemo = avanzarHemo(this.hemo, obj, DT);
 

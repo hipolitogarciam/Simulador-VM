@@ -45,21 +45,30 @@ Registro de las decisiones no especificadas en el encargo, con su justificación
 - La pausa espiratoria también se ejecuta en PS/asistido: se aplica en el siguiente fin de espiración
   o disparo del paciente, cerrando la válvula (como el "expiratory hold" de un respirador real).
 - Transiciones: los parámetros del respirador cambian de golpe (como al girar el mando); los del
-  paciente en rampa suave (`duracion`, 8 s por defecto); gases y hemodinámica siguen su τ.
+  paciente en rampa suave (`duracion`, 8 s por defecto); gases y hemodinámica siguen su τ. Si una
+  transición interrumpe una rampa, los parámetros que no toca siguen hacia el destino de la anterior.
+- Los gases se integran cada 50 ms (no cada paso de 5 ms): sus τ son ≥ 1 s y su equilibrio solo depende
+  de medidas por ciclo, así que el resultado es el mismo con una décima parte del coste. La PaO₂ de
+  equilibrio se resuelve por búsqueda binaria sobre el contenido de O₂ (monótono). Con ello un salto de
+  tiempo de 180 s cuesta < 100 ms (ver `docs/QA.md`).
 
 ## Interfaz
 - Curvas en `<canvas>` con `requestAnimationFrame`, `ResizeObserver` y `devicePixelRatio`.
-  Barrido continuo con hueco de borrado tras la cabeza, como un monitor real.
+  Barrido continuo con hueco de borrado tras la cabeza, como un monitor real. El fondo de cada curva
+  (rejilla y etiquetas) se cachea en un canvas fuera de pantalla por tamaño y escala.
 - Flujo en L/min y volumen en ml en pantalla (el motor trabaja en L/s y L).
 - Sonido de alarmas desactivado por defecto; interruptor 🔔 en la cabecera del ventilador.
 - Al responder mal una opción con `transicionConsecuencia`, el empeoramiento se muestra 9 s y
-  después se revierte y se continúa por la rama correcta.
+  después se revierte y se continúa por la rama correcta: se aplica una sola transición con el estado
+  acumulado de la rama correcta (paciente, respirador y objetivos de gases) sobreescrito por la
+  transición del paso.
 - La TA no invasiva solo se mide al pulsar el botón (15 s) y muestra la hora simulada de la toma.
 - Modo libre incluido en v1 con presets de los fenómenos del motor.
 
 ## Persistencia
 - `ProgressStore` como interfaz; implementación `LocalStorageProgressStore` con `try/catch`
-  y `MemoriaProgressStore` de respaldo para tests.
+  y `MemoriaProgressStore` de respaldo para tests. Lo leído del almacenamiento (y lo importado) pasa
+  por `sanearDatos`: perfiles sin nombre se descartan y los casos corruptos se reconstruyen.
 - Código de texto portable: `VMI1.` + base64(deflate-raw(JSON)) mediante `CompressionStream`;
   si el navegador no lo soporta se usa `VMI0.` + base64(JSON).
 

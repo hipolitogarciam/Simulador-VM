@@ -282,7 +282,7 @@ export const caso06: Caso = {
           transicionConsecuencia: { respirador: { peep: 10 } },
         },
       ],
-      transicion: { respirador: { fio2: 1.0 } },
+      transicion: { respirador: { fio2: 1.0 }, gases: {} },
     },
     {
       id: 'p6',

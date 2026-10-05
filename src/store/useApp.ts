@@ -103,7 +103,9 @@ export const useApp = create<EstadoApp>((set, get) => {
     },
 
     irA(p) {
-      set({ pantalla: p });
+      // Al salir de un caso o de su resumen se descarta la sesión para no arrastrar estado.
+      const conservarSesion = p === 'caso' || p === 'resumen';
+      set({ pantalla: p, sesion: conservarSesion ? get().sesion : null });
     },
 
     iniciarCaso(casoId) {
@@ -155,19 +157,20 @@ export const useApp = create<EstadoApp>((set, get) => {
       if (!sesion || sesion.fase !== 'consecuencia') return;
       const caso = casoPorId(sesion.casoId);
       const paso = caso?.pasos[sesion.pasoIdx];
+      if (!caso || !paso) return;
       const sim = getSimulador();
-      // Se vuelve por la rama correcta: se aplica la transición del paso.
-      const op = sesion.opcionElegida !== null ? paso?.opciones[sesion.opcionElegida] : undefined;
+      // Se vuelve por la rama correcta: se deshace lo que cambió la consecuencia (paciente,
+      // respirador y objetivos de gases) y se aplica la transición del paso en una sola
+      // transición, para que la rampa del paso no se construya sobre el estado de la consecuencia.
+      const op = sesion.opcionElegida !== null ? paso.opciones[sesion.opcionElegida] : undefined;
       const revertir = op?.transicionConsecuencia;
-      if (revertir?.paciente || revertir?.respirador) {
-        // Revertir lo que cambió la consecuencia volviendo al estado del paso.
-        sim.aplicarTransicion({
-          paciente: revertir.paciente ? estadoPacienteAntes(caso!, sesion.pasoIdx) : undefined,
-          respirador: revertir.respirador ? estadoRespiradorAntes(caso!, sesion.pasoIdx) : undefined,
-          duracion: 4,
-        });
+      const tr = paso.transicion;
+      const paciente = revertir?.paciente || tr?.paciente ? { ...(revertir?.paciente ? estadoPacienteAntes(caso, sesion.pasoIdx) : {}), ...tr?.paciente } : undefined;
+      const respirador = revertir?.respirador || tr?.respirador ? { ...(revertir?.respirador ? estadoRespiradorAntes(caso, sesion.pasoIdx) : {}), ...tr?.respirador } : undefined;
+      const gases = tr?.gases !== undefined ? tr.gases : revertir?.gases !== undefined ? estadoGasesAntes(caso, sesion.pasoIdx) : undefined;
+      if (paciente || respirador || gases !== undefined) {
+        sim.aplicarTransicion({ paciente, respirador, gases, duracion: tr?.duracion ?? (revertir?.paciente ? 4 : undefined) });
       }
-      if (paso?.transicion) sim.aplicarTransicion(paso.transicion);
       set({ sesion: { ...sesion, fase: 'feedback', finConsecuencia: null } });
     },
 
@@ -253,6 +256,16 @@ function estadoRespiradorAntes(caso: Caso, idx: number) {
   return r;
 }
 
+/** Objetivos de gases vigentes justo antes de la transición del paso `idx` (rama correcta). */
+function estadoGasesAntes(caso: Caso, idx: number): { paco2?: number; spo2?: number } {
+  let g: { paco2?: number; spo2?: number } = caso.gasesIniciales ?? {};
+  for (let i = 0; i < idx; i++) {
+    const tr = caso.pasos[i]?.transicion;
+    if (tr?.gases !== undefined) g = tr.gases;
+  }
+  return g;
+}
+
 export function pasoActual(sesion: SesionCaso | null): { caso: Caso; paso: Paso } | null {
   if (!sesion) return null;
   const caso = casoPorId(sesion.casoId);
@@ -268,4 +281,4 @@ export function resumenSesion(sesion: SesionCaso, caso: Caso) {
   return { aciertos, total: caso.pasos.length, fallosPorTema: [...fallos.entries()] };
 }
 
-export { CASOS };
+export { CASOS, estadoPacienteAntes, estadoRespiradorAntes, estadoGasesAntes };

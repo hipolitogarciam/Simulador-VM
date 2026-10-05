@@ -73,14 +73,20 @@ export function pao2Equilibrio(
   const ccO2 = 1.34 * hb * (saturacion(pao2Alv) / 100) + 0.003 * pao2Alv;
   const difAV = 5 / Math.max(0.3, gastoRelativo);
   const caO2 = ccO2 - (difAV * shunt) / Math.max(0.05, 1 - shunt);
-  // Resolver CaO2 = 1.34·Hb·S(PaO2) + 0.003·PaO2 mediante iteración.
-  let pao2 = 80;
-  for (let i = 0; i < 25; i++) {
-    const sat = Math.max(0, Math.min(1, (caO2 - 0.003 * pao2) / (1.34 * hb)));
-    const nuevo = pao2DesdeSaturacion(sat * 100);
-    pao2 = pao2 + (nuevo - pao2) * 0.7;
+  // Resolver CaO2 = 1.34·Hb·S(PaO2) + 0.003·PaO2. El contenido es monótono creciente en PaO2,
+  // así que basta una búsqueda binaria en [20, 650] (unas 40 evaluaciones de la curva en vez
+  // de las ~1000 de la iteración de punto fijo anterior; el resultado es el mismo).
+  const contenido = (po2: number) => 1.34 * hb * (saturacion(po2) / 100) + 0.003 * po2;
+  let lo = 20;
+  let hi = 650;
+  if (caO2 <= contenido(lo)) return lo;
+  if (caO2 >= contenido(hi)) return hi;
+  for (let i = 0; i < 40; i++) {
+    const mid = (lo + hi) / 2;
+    if (contenido(mid) < caO2) lo = mid;
+    else hi = mid;
   }
-  return Math.max(20, Math.min(650, pao2));
+  return (lo + hi) / 2;
 }
 
 /** Gradiente PaCO2–EtCO2 según el espacio muerto y el gasto cardíaco. */
